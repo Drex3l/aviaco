@@ -72,6 +72,9 @@ switch ($action) {
         Employee::update_pil_rating($featureList, $empID);
         header("location: ?action=update_pil_rating&emp_num=$empID");
         break;
+    case 'destionations':
+        echo 'under contruction';
+        break;
     case 'browser':
         print_r(WebTools::getBrowser());
         //echo $_SERVER['HTTP_USER_AGENT'];
