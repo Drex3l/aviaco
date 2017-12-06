@@ -29,7 +29,7 @@ abstract class dbHandler {
         // create database connection only if one does not already exists
         if (!isset(self::$conn)) {
             try {
-                self::$conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, '$DB_PASS');
+                self::$conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PASS);
             } catch (PDOException $ex) {
                 self::db_error($ex->getMessage());
             }
