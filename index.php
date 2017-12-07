@@ -1,8 +1,8 @@
 <?php
 
-require_once('epiqworx/abstraction/epiqrithm.php');
-require_once('epiqworx/db/handler.php');
-require_once('model/aviaco_db.php');
+require_once('root/epiqworx/epiqrithm.php');
+require_once('root/epiqworx/db/handler.php');
+require_once('root/model/aviaco_db.php');
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -20,7 +20,7 @@ switch ($action) {
         $model_name = Model::get_model_name($model_code);
         $models = Model::get_models();
         $AVG = Model::get_model_average($model_code);
-        require_once dirname(__FILE__, 1) . ('/view/model_avg.php');
+        require_once dirname(__FILE__, 1) . ('/root/view/model_avg.php');
         break;
     case 'engine_service':
         $hours = filter_input(INPUT_POST, 'hours');
@@ -28,7 +28,7 @@ switch ($action) {
             $hours = "20";
         }
         $aircrafts = Aircraft::get_engine_service_list($hours);
-        require_once dirname(__FILE__, 1) . ('/view/engine_service.php');
+        require_once dirname(__FILE__, 1) . ('/root/view/engine_service.php');
         break;
     case 'med_exam':
         $days = filter_input(INPUT_POST, 'days');
@@ -36,7 +36,7 @@ switch ($action) {
             $days = "30";
         }
         $pilots = Employee::get_med_exam($days);
-        require_once dirname(__FILE__, 1) . ('/view/med_exam.php');
+        require_once dirname(__FILE__, 1) . ('/root/view/med_exam.php');
         break;
     case 'rating_pilots':
         $rating_code = filter_input(INPUT_GET, 'rating_code', FILTER_SANITIZE_STRING);
@@ -46,7 +46,7 @@ switch ($action) {
         $rating_name = Rating::get_rating_name($rating_code);
         $ratings = Rating::get_ratings();
         $pilot_rating = Rating::get_rating_pilots($rating_code);
-        require_once dirname(__FILE__, 1) . ('/view/rating_pilots.php');
+        require_once dirname(__FILE__, 1) . ('/root/view/rating_pilots.php');
         break;
     case 'update_pil_rating':
         $emp_num = filter_input(INPUT_GET, 'emp_num', FILTER_SANITIZE_STRING);
@@ -56,7 +56,7 @@ switch ($action) {
         $employee = Employee::get_employees();
         $ratings = Rating::get_ratings();
         $pilot_data = Employee::get_pilot_data($emp_num);
-        require_once dirname(__FILE__, 1) . ('/view/update_pil_rating.php');
+        require_once dirname(__FILE__, 1) . ('/root/view/update_pil_rating.php');
         break;
     case 'rate_list':
         $featureList = "";
@@ -74,6 +74,10 @@ switch ($action) {
         break;
     case 'destionations':
         echo 'under contruction';
+        break;
+    case 'print':
+        Debug::testPrint($_GET['txt']);
+        echo 'OK!';
         break;
     case 'browser':
         print_r(WebTools::getBrowser());

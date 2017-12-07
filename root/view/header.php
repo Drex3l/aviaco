@@ -8,7 +8,7 @@ ini_set("display_errors", 1);
 <!-- the head section -->
 <head>
     <title>PRT2110 TEST ASSIGNMENT</title>
-    <link rel="stylesheet" type="text/css"   href="usr/css/main.css" />
+    <link rel="stylesheet" type="text/css"   href="root/usr/css/main.css" />
 </head>
 
 <!-- the body section -->

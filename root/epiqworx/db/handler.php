@@ -1,6 +1,5 @@
 <?php
-require_once dirname(__FILE__,2).'/abstraction/FoulPlay.php';
-require_once dirname(__FILE__,2).'/concrete/Log.php';
+require_once dirname(__FILE__,2).'/report/Log.php';
 
 // Class providing generic data access functionality for PDO methods
 abstract class dbHandler {
@@ -8,10 +7,9 @@ abstract class dbHandler {
     // hold an instance of the PDO class
     private static $conn;
 
-//    private static $dsn = "mysql:host=$DB_HOST;dbname=$DB_NAME";
     private static function GetConnection() {
         // retrieve connection string information
-        $conexion = parse_ini_file(dirname(__FILE__, 3) . "/connection.ini");
+        $conexion = parse_ini_file(dirname(__FILE__, 4) . "/connection.ini");
         if ($_SERVER['HTTP_HOST'] == 'sict-iis.nmmu.ac.za') {
             $DB_HOST = 'sict-mysql';
         } else {

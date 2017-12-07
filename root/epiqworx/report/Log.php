@@ -6,7 +6,7 @@
  * Which You Can Find On https://epiquadruple.org
  */
 
-namespace epiqworx\concrete;
+namespace epiqworx\report;
 
 /**
  * Description of Log
@@ -48,12 +48,7 @@ class Log {
             if (is_dir($this->path)) {
                 if (!file_exists($log)) {$fh = fopen($log, 'a+');fclose($fh);}
                 if (!file_exists($log)) {
-                     
                     header("location: ../../view/error?msg=Couldn't write File '$log'");
-                    $fh = fopen($log, 'a+') or die();
-                    $logcontent = "Time : " . $date->format('H:i:s') . "\r\n" . $message . "\r\n";
-                    fwrite($fh, $logcontent);
-                    fclose($fh);
                 } else {
                     $this->edit($log, $date, $message);
                 }
