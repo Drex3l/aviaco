@@ -1,4 +1,4 @@
-<?php require_once dirname(__FILE__,2). '/view/header.php'; ?>
+<?php require_once dirname(__FILE__,3). '/view/face/header.php'; ?>
 <main>
     <h1>Pilot Medical Examinations</h1>
 
@@ -36,4 +36,4 @@
         <h2 class="right selected">Examinations within <?= $days; ?> days or less</h2>
     </section>
 </main>
-<?php  require_once dirname(__FILE__,2).  '/view/footer.php'; ?>
+<?php  require_once dirname(__FILE__,3).  '/view/face/footer.php'; ?>

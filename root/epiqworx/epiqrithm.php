@@ -1,8 +1,13 @@
 <?php
 //---------------------------------------------------DEFINE GLOBAL PATH CONSTANT
 $phpSelf = explode("/", filter_input(INPUT_SERVER, 'PHP_SELF'));
-define('ROOT', $phpSelf[1]);
-define('PATH', "http://" . filter_input(INPUT_SERVER, 'HTTP_HOST') . "/" . ROOT);
+if (empty($level)){$level=1;}   //----------------------------------------------website hierachy
+$temp = "";
+for($k=1;$k<count($phpSelf)-$level;$k++){
+    $temp .= '/'.$phpSelf[$k];
+}
+define('ROOT', $temp);
+define('PATH', "http://" . filter_input(INPUT_SERVER, 'HTTP_HOST') . ROOT);
 
 
 abstract class Convert {

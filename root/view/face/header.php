@@ -8,14 +8,14 @@ ini_set("display_errors", 1);
 <!-- the head section -->
 <head>
     <title>PRT2110 TEST ASSIGNMENT</title>
-    <link rel="stylesheet" type="text/css"   href="root/usr/css/main.css" />
+    <link rel="stylesheet" type="text/css"   href="<?= PATH;?>/root/usr/css/main.css" />
 </head>
 
 <!-- the body section -->
 <body><?php if(empty($error_message)){?>
     <header>
     <h1>AviaCo</h1>
-    <p>the Air for the People</p>
+    <p>the Air for the People</p><br/>
     <ul id="navigation">
     <li <?php if($action === 'model_avg'){?> id="active-page" <?php }?> ><a href="?action=model_avg">comsumption</a><li>
     <li <?php if($action === 'engine_service'){?> id="active-page" <?php }?>><a href="?action=engine_service">engine service</a><li>

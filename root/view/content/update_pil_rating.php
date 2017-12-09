@@ -1,4 +1,4 @@
-<?php require_once dirname(__FILE__,2). '/view/header.php'; ?>
+<?php require_once dirname(__FILE__,3). '/view/face/header.php'; ?>
 <main>
     <h1>Pilot Select</h1>
     <aside>
@@ -50,4 +50,4 @@
         </table>
     </section>
 </main>
-<?php  require_once dirname(__FILE__,2).  '/view/footer.php'; ?>
+<?php  require_once dirname(__FILE__,3).  '/view/face/footer.php'; ?>

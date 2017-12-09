@@ -1,4 +1,4 @@
-<?php require_once dirname(__FILE__,2). '/view/header.php'; ?>
+<?php require_once dirname(__FILE__,3). '/view/face/header.php'; ?>
 <main>
     <h1>AviaCo Aircraft Models</h1>
 
@@ -33,4 +33,4 @@
         <h2 class="right selected"><?= $model_name; ?></h2>
     </section>
 </main>
-<?php  require_once dirname(__FILE__,2).  '/view/footer.php'; ?>
+<?php  require_once dirname(__FILE__,3).  '/view/face/footer.php'; ?>
