@@ -17,12 +17,12 @@ ini_set("display_errors", 1);
     <h1>AviaCo</h1>
     <p>the Air for the People</p><br/>
     <ul id="navigation">
-    <li <?php if($action === 'model_avg'){?> id="active-page" <?php }?> ><a href="?action=model_avg">comsumption</a><li>
-    <li <?php if($action === 'engine_service'){?> id="active-page" <?php }?>><a href="?action=engine_service">engine service</a><li>
-    <li <?php if($action === 'med_exam'){?> id="active-page" <?php }?>><a href="?action=med_exam">med exam</a><li>
-     <li <?php if($action === 'rating_pilots'){?> id="active-page" <?php }?>><a href="?action=rating_pilots">Pilot Rating</a><li>
-     <li <?php if($action === 'update_pil_rating'){?> id="active-page" <?php }?>><a href="?action=update_pil_rating">Pilot Update</a><li>
-     <li <?php if($action === 'destionations'){?> id="active-page" <?php }?>><a href="?action=destionations">Destinations</a><li>
+        <li <?php if($action === 'model_avg'){ echo 'id="active-page"'; }?> ><a href="?action=model_avg">comsumption</a><li>
+    <li <?php if($action === 'engine_service'){echo 'id="active-page"'; }?>><a href="?action=engine_service">engine service</a><li>
+    <li <?php if($action === 'med_exam'){echo 'id="active-page"'; }?>><a href="?action=med_exam">med exam</a><li>
+     <li <?php if($action === 'rating_pilots'){echo 'id="active-page"';  }?>><a href="?action=rating_pilots">Pilot Rating</a><li>
+     <li <?php if($action === 'update_pil_rating'){echo 'id="active-page"'; }?>><a href="?action=update_pil_rating">Pilot Update</a><li>
+     <li <?php if($action === 'destionations'){echo 'id="active-page"';  }?>><a href="?action=destionations">Destinations</a><li>
     </ul>
     <div class="clear"></div>
 </header><?php }?>
@@ -31,6 +31,6 @@ ini_set("display_errors", 1);
 #navigation li {  display: inline; list-style: none; margin: 0;padding: 0}
 #navigation a { color: black;  font-size: 11pt;  letter-spacing: -1px;  padding: 2px 15px; text-decoration: none;  text-transform: uppercase;border:none; margin: 0}
 #navigation a:hover{  background: #ddd;  color: #000}
-#active-page a {  background: #000;  color: #fff;}
+#active-page a,#active-page a:hover {  background: #000;  color: #fff;cursor: default}
 .clear {clear: both;height: 0;}
 </style>
