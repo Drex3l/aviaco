@@ -1,6 +1,6 @@
 <?php require_once dirname(__FILE__,3). '/view/face/header.php'; ?>
 <main>
-    <h1>Pilot Rating</h1>
+    <h1>Rating Select</h1>
 
     <aside>
         <!-- display a list of departments -->

@@ -6,10 +6,10 @@
         <h2>Pilots</h2>
         <nav>
         <form action="." method="post">
-        <input type="hidden" name="action" value="update_pil_rating"/>
+        <input type="hidden" name="action" value="update_pilot_rating"/>
         <ul>
         <?php foreach ($employee as $record) : ?>
-            <li><a href="?action=update_pil_rating&emp_num=<?= $record['ID']; ?>" <?php if($record['ID'] === $pilot_data['ID']){ echo 'class="selected"';} ?> > <?= $record['PILOT']; ?></a>
+            <li><a href="?action=update_pilot_rating&emp_num=<?= $record['ID']; ?>" <?php if($record['ID'] === $pilot_data['ID']){ echo 'class="selected"';} ?> > <?= $record['PILOT']; ?></a>
             </li>
         <?php endforeach; ?>
         </ul>
@@ -24,7 +24,7 @@
         <input type="hidden" name="action" value="rate_list"/>
         <ul>
         <?php foreach ($ratings as $rating) : ?>
-            <li><span><input type="checkbox" name="rating[]" value="<?= $rating['RTG_CODE']; ?> " <?php if(Rating::checkRating($pilot_data['ID'],$rating['RTG_CODE'])){?>checked<?php }?> /><?= $rating['RTG_CODE']; ?></span>
+            <li><span><input type="checkbox" name="rating[]" value="<?= $rating['RTG_CODE']; ?> " <?php if(Rating::check($pilot_data['ID'],$rating['RTG_CODE'])){?>checked<?php }?> /><?= $rating['RTG_CODE']; ?></span>
             </li>
         <?php endforeach; ?>
         </ul>

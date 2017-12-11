@@ -2,17 +2,17 @@
 
 abstract class Model {
 
-    public static function get_models() {
+    public static function get_records() {
         return dbHandler::DQL("SELECT MOD_CODE, MOD_NAME FROM model");
     }
 
-    public static function get_model_name($model_code) {
+    public static function get_name($model_code) {
         $sql = 'SELECT MOD_NAME FROM model WHERE MOD_CODE = :mod_id';
         $params = array(':mod_id' => $model_code);
         return dbHandler::DQL($sql, $params)['MOD_NAME'];
     }
 
-    public static function get_model_average($model_code) {
+    public static function get_average($model_code) {
         $sql = 'CALL sp_getModelAvegrage(:mod_id)';
         $params = array(':mod_id' => $model_code);
         return dbHandler::DQL($sql, $params);
@@ -22,11 +22,11 @@ abstract class Model {
 
 abstract class Aircraft {
 
-    public static function get_aircrafts_by_model($models) {
-        $sql = 'SELECT ID, CHAR_FUEL_GALLONS, CHAR_OIL_QTS FROM aircraft_list WHERE MOD_CODE = :mod_id';
-        $params = array(':mod_id' => $model_code);
-        return dbHandler::DQL($sql, $params);
-    }
+//    public static function get_by_model($models) {
+//        $sql = 'SELECT ID, CHAR_FUEL_GALLONS, CHAR_OIL_QTS FROM aircraft_list WHERE MOD_CODE = :mod_id';
+//        $params = array(':mod_id' => $model_code);
+//        return dbHandler::DQL($sql, $params);
+//    }
 
     public static function get_engine_service_list($hours) {
         $sql = "CALL sp_getEngineServiceList(:hours)";
@@ -50,11 +50,11 @@ abstract class Employee {
         return dbHandler::DQL($sql, $params);
     }
 
-    public static function get_employees() {
+    public static function get_records() {
         return dbHandler::DQL('SELECT * FROM pilot_meddate_list');
     }
 
-    public static function update_pil_rating($items, $pilot) {
+    public static function update_pilot_rating($items, $pilot) {
         $sql = 'CALL sp_ratePilot(:items,:pilot)';
         $params = array(':items'=>$items,':pilot'=>$pilot);
         dbHandler::Execute($sql,$params);
@@ -64,23 +64,23 @@ abstract class Employee {
 
 abstract class Rating {
 
-    public static function get_ratings() {
+    public static function get_records() {
         return dbHandler::DQL('SELECT * FROM rating');
     }
 
-    public static function get_rating_name($rating_code) {
+    public static function get_name($rating_code) {
         $sql = 'SELECT RTG_NAME FROM rating WHERE RTG_CODE = :id';
         $params = array(':id'=>$rating_code);
         return dbHandler::DQL($sql, $params)['RTG_NAME'];
     }
 
-    public static function get_rating_pilots($rating) {
+    public static function get_pilots($rating) {
         $sql = 'CALL sp_getRatingPilots(:rating)';
         $params = array(':rating'=>$rating);
         return dbHandler::DQL($sql, $params);
     }
 
-    public static function checkRating($empID, $rating_code) {
+    public static function check($empID, $rating_code) {
         $sql = 'SELECT sf_checkRating(:emp , :rating) FIELD';
         $params = array(':emp'=>$empID,':rating'=>$rating_code);
         return dbHandler::DQL($sql,$params)['FIELD'];

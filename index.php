@@ -2,7 +2,7 @@
 
 require_once('root/epiqworx/epiqrithm.php');
 require_once('root/epiqworx/db/handler.php');
-require_once('root/model/aviaco_db.php');
+require_once('root/model/datasource.php');
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -17,9 +17,9 @@ switch ($action) {
         if ($model_code == NULL || $model_code == FALSE) {
             $model_code = "C-90A";
         }
-        $model_name = Model::get_model_name($model_code);
-        $models = Model::get_models();
-        $AVG = Model::get_model_average($model_code);
+        $model_name = Model::get_name($model_code);
+        $models = Model::get_records();
+        $AVG = Model::get_average($model_code);
         require_once dirname(__FILE__, 1) . ('/root/view/content/model_avg.php');
         break;
     case 'engine_service':
@@ -43,20 +43,20 @@ switch ($action) {
         if ($rating_code == NULL || $rating_code == FALSE) {
             $rating_code = "CFI";
         }
-        $rating_name = Rating::get_rating_name($rating_code);
-        $ratings = Rating::get_ratings();
-        $pilot_rating = Rating::get_rating_pilots($rating_code);
+        $rating_name = Rating::get_name($rating_code);
+        $ratings = Rating::get_records();
+        $pilot_rating = Rating::get_pilots($rating_code);
         require_once dirname(__FILE__, 1) . ('/root/view/content/rating_pilots.php');
         break;
-    case 'update_pil_rating':
+    case 'update_pilot_rating':
         $emp_num = filter_input(INPUT_GET, 'emp_num', FILTER_SANITIZE_STRING);
         if ($emp_num == NULL || $emp_num == FALSE) {
             $emp_num = "101";
         }
-        $employee = Employee::get_employees();
-        $ratings = Rating::get_ratings();
+        $employee = Employee::get_records();
+        $ratings = Rating::get_records();
         $pilot_data = Employee::get_pilot_data($emp_num);
-        require_once dirname(__FILE__, 1) . ('/root/view/content/update_pil_rating.php');
+        require_once dirname(__FILE__, 1) . ('/root/view/content/update_pilot_rating.php');
         break;
     case 'rate_list':
         $featureList = "";
@@ -69,7 +69,7 @@ switch ($action) {
                 $featureList .= "$item/";
             }
         }
-        Employee::update_pil_rating($featureList, $empID);
+        Employee::update_pilot_rating($featureList, $empID);
         header("location: ?action=update_pil_rating&emp_num=$empID");
         break;
     case 'destionations':

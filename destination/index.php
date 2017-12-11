@@ -1,8 +1,9 @@
 <?php
-$level=2;   //------------------------------------------------------------------webiste hierachy
-require_once dirname(__FILE__,2).'/root/epiqworx/epiqrithm.php';
-require_once dirname(__FILE__,2).'/root/epiqworx/db/handler.php';
-//require_once('root/model/aviaco_db.php');
+
+$level = 2;   //------------------------------------------------------------------webiste hierachy
+require_once dirname(__FILE__, 2) . '/root/epiqworx/epiqrithm.php';
+require_once dirname(__FILE__, 2) . '/root/epiqworx/db/handler.php';
+require_once('model/datasource.php');
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -13,6 +14,19 @@ if ($action == NULL) {
 }
 switch ($action) {
     case 'destionations':
+        $country_code = filter_input(INPUT_GET, 'country_code', FILTER_SANITIZE_STRING);
+        if ($country_code == NULL || $country_code == FALSE) {
+            $country_code = "ZAF";
+        }
+        $country_name = Country::get_country_name($country_code);
+        $countries = Country::get_names();
+        $cities = City::get_country_cities($country_code,10,0);
+        
+        $city_id = filter_input(INPUT_GET, 'city_id', FILTER_SANITIZE_STRING);
+        if ($city_id == NULL || $city_id == FALSE) {
+            $city_id = "712";
+        }
+        $city = City::get_name($city_id);
         require_once dirname(__FILE__, 1) . ('/view/list.php');
         break;
     default :

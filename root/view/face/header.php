@@ -17,12 +17,12 @@ ini_set("display_errors", 1);
     <h1>AviaCo</h1>
     <p>the Air for the People</p><br/>
     <ul id="navigation">
-        <li <?php if($action === 'model_avg'){ echo 'id="active-page"'; }?> ><a href="?action=model_avg">comsumption</a><li>
-    <li <?php if($action === 'engine_service'){echo 'id="active-page"'; }?>><a href="?action=engine_service">engine service</a><li>
-    <li <?php if($action === 'med_exam'){echo 'id="active-page"'; }?>><a href="?action=med_exam">med exam</a><li>
-     <li <?php if($action === 'rating_pilots'){echo 'id="active-page"';  }?>><a href="?action=rating_pilots">Pilot Rating</a><li>
-     <li <?php if($action === 'update_pil_rating'){echo 'id="active-page"'; }?>><a href="?action=update_pil_rating">Pilot Update</a><li>
-     <li <?php if($action === 'destionations'){echo 'id="active-page"';  }?>><a href="?action=destionations">Destinations</a><li>
+        <li <?php if($action === 'model_avg'){ echo 'id="active-page"'; }?> ><a <?php if($action === 'model_avg'){ echo 'href="javascript:"';}else{echo 'href="?action=model_avg"';}?>>comsumption</a><li>
+    <li <?php if($action === 'engine_service'){echo 'id="active-page"'; }?>><a <?php if($action === 'engine_service'){ echo 'href="javascript:"';}else{echo 'href="?action=engine_service"';}?>>engine service</a><li>
+    <li <?php if($action === 'med_exam'){echo 'id="active-page"'; }?>><a <?php if($action === 'med_exam'){ echo 'href="javascript:"';}else{echo 'href="?action=med_exam"';}?>>med exam</a><li>
+     <li <?php if($action === 'rating_pilots'){echo 'id="active-page"';  }?>><a <?php if($action === 'rating_pilots'){ echo 'href="javascript:"';}else{echo 'href="?action=rating_pilots"';}?>>Pilot Rating</a><li>
+     <li <?php if($action === 'update_pil_rating'){echo 'id="active-page"'; }?>><a <?php if($action === 'update_pilot_rating'){ echo 'href="javascript:"';}else{echo 'href="?action=update_pilot_rating"';}?>>Pilot Update</a><li>
+     <li <?php if($action === 'destionations'){echo 'id="active-page"';  }?>><a <?php if($action === 'destionations'){ echo 'href="javascript:"';}else{echo 'href="?action=destionations"';}?>>Destinations</a><li>
     </ul>
     <div class="clear"></div>
 </header><?php }?>
