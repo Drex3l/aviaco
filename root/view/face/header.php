@@ -21,7 +21,7 @@ ini_set("display_errors", 1);
     <li <?php if($action === 'engine_service'){echo 'id="active-page"'; }?>><a <?php if($action === 'engine_service'){ echo 'href="javascript:"';}else{echo 'href="?action=engine_service"';}?>>engine service</a><li>
     <li <?php if($action === 'med_exam'){echo 'id="active-page"'; }?>><a <?php if($action === 'med_exam'){ echo 'href="javascript:"';}else{echo 'href="?action=med_exam"';}?>>med exam</a><li>
      <li <?php if($action === 'rating_pilots'){echo 'id="active-page"';  }?>><a <?php if($action === 'rating_pilots'){ echo 'href="javascript:"';}else{echo 'href="?action=rating_pilots"';}?>>Pilot Rating</a><li>
-     <li <?php if($action === 'update_pil_rating'){echo 'id="active-page"'; }?>><a <?php if($action === 'update_pilot_rating'){ echo 'href="javascript:"';}else{echo 'href="?action=update_pilot_rating"';}?>>Pilot Update</a><li>
+     <li <?php if($action === 'update_pilot_rating'){echo 'id="active-page"'; }?>><a <?php if($action === 'update_pilot_rating'){ echo 'href="javascript:"';}else{echo 'href="?action=update_pilot_rating"';}?>>Pilot Update</a><li>
      <li <?php if($action === 'destionations'){echo 'id="active-page"';  }?>><a <?php if($action === 'destionations'){ echo 'href="javascript:"';}else{echo 'href="?action=destionations"';}?>>Destinations</a><li>
     </ul>
     <div class="clear"></div>

@@ -17,9 +17,9 @@ switch ($action) {
         if ($model_code == NULL || $model_code == FALSE) {
             $model_code = "C-90A";
         }
-        $model_name = Model::get_name($model_code);
-        $models = Model::get_records();
-        $AVG = Model::get_average($model_code);
+        $model_name = Aircraft::get_model_name($model_code);
+        $models = Aircraft::get_models();
+        $AVG = Aircraft::get_model_average($model_code);
         require_once dirname(__FILE__, 1) . ('/root/view/content/model_avg.php');
         break;
     case 'engine_service':

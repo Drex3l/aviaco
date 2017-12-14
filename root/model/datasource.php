@@ -1,39 +1,27 @@
 <?php
 
-abstract class Model {
-
-    public static function get_records() {
-        return dbHandler::DQL("SELECT MOD_CODE, MOD_NAME FROM model");
-    }
-
-    public static function get_name($model_code) {
-        $sql = 'SELECT MOD_NAME FROM model WHERE MOD_CODE = :mod_id';
-        $params = array(':mod_id' => $model_code);
-        return dbHandler::DQL($sql, $params)['MOD_NAME'];
-    }
-
-    public static function get_average($model_code) {
-        $sql = 'CALL sp_getModelAvegrage(:mod_id)';
-        $params = array(':mod_id' => $model_code);
-        return dbHandler::DQL($sql, $params);
-    }
-
-}
-
 abstract class Aircraft {
-
-//    public static function get_by_model($models) {
-//        $sql = 'SELECT ID, CHAR_FUEL_GALLONS, CHAR_OIL_QTS FROM aircraft_list WHERE MOD_CODE = :mod_id';
-//        $params = array(':mod_id' => $model_code);
-//        return dbHandler::DQL($sql, $params);
-//    }
-
     public static function get_engine_service_list($hours) {
         $sql = "CALL sp_getEngineServiceList(:hours)";
         $params = array(':hours' => $hours);
         return dbHandler::DQL($sql, $params);
     }
 
+    public static function get_models() {
+        return dbHandler::DQL("SELECT MOD_CODE, MOD_NAME FROM model");
+    }
+
+    public static function get_model_name($model_code) {
+        $sql = 'SELECT MOD_NAME FROM model WHERE MOD_CODE = :mod_id';
+        $params = array(':mod_id' => $model_code);
+        return dbHandler::DQL($sql, $params)['MOD_NAME'];
+    }
+
+    public static function get_model_average($model_code) {
+        $sql = 'CALL sp_getModelAvegrage(:mod_id)';
+        $params = array(':mod_id' => $model_code);
+        return dbHandler::DQL($sql, $params);
+    }
 }
 
 abstract class Employee {

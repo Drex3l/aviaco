@@ -45,21 +45,6 @@ CREATE TABLE `aircraft` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `aircraft_list`
---
-
-DROP TABLE IF EXISTS `aircraft_list`;
-/*!50001 DROP VIEW IF EXISTS `aircraft_list`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `aircraft_list` AS SELECT 
- 1 AS `ID`,
- 1 AS `CHAR_FUEL_GALLONS`,
- 1 AS `CHAR_OIL_QTS`,
- 1 AS `MOD_CODE`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Temporary table structure for view `average_consumption`
 --
 
@@ -330,6 +315,37 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `sf_cities_page_count` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`s215013395`@`localhost` FUNCTION `sf_cities_page_count`(block TINYINT UNSIGNED,nation CHAR(3)) RETURNS smallint(5) unsigned
+BEGIN
+
+
+
+ 
+ DECLARE pages SMALLINT UNSIGNED;
+ DECLARE list BIGINT UNSIGNED;
+    SELECT COUNT(ID) FROM world.city WHERE CountryCode = nation INTO list;
+    SELECT (list / block) INTO pages;
+    
+    IF list = 0 THEN RETURN 0;	END IF;
+    IF pages = 0 THEN RETURN 1;	END IF;
+    IF list > block && list % block > 0 THEN	SET pages = pages + 1; END IF;
+    RETURN pages;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `SPLIT_STR` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -362,8 +378,12 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getDestinations`(IN n TINYINT UNSIGNED, IN block TINYINT UNSIGNED,IN nation CHAR(3))
 BEGIN
+
+
+
+ 
     DECLARE k BIGINT UNSIGNED DEFAULT (n * block);
-    SELECT Name, District, ID FROM world.city WHERE CountryCode = nation ORDER BY Name LIMIT block OFFSET k;
+    SELECT Name, District, CountryCode, ID FROM world.city WHERE CountryCode = nation ORDER BY Name LIMIT block OFFSET k;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -496,24 +516,6 @@ DELIMITER ;
 USE `aviaco`;
 
 --
--- Final view structure for view `aircraft_list`
---
-
-/*!50001 DROP VIEW IF EXISTS `aircraft_list`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `aircraft_list` AS select `C`.`CHAR_TRIP` AS `ID`,`C`.`CHAR_FUEL_GALLONS` AS `CHAR_FUEL_GALLONS`,`C`.`CHAR_OIL_QTS` AS `CHAR_OIL_QTS`,`A`.`MOD_CODE` AS `MOD_CODE` from (`charter` `C` join `aircraft` `A`) where (`C`.`AC_NUMBER` = `A`.`AC_NUMBER`) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
 -- Final view structure for view `average_consumption`
 --
 
@@ -612,4 +614,4 @@ USE `aviaco`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-12  1:09:30
+-- Dump completed on 2017-12-14  2:26:10

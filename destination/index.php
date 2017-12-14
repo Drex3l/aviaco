@@ -14,13 +14,15 @@ if ($action == NULL) {
 }
 switch ($action) {
     case 'destionations':
+        $country_limit = 10;
         $country_code = filter_input(INPUT_GET, 'country_code', FILTER_SANITIZE_STRING);
         if ($country_code == NULL || $country_code == FALSE) {
             $country_code = "ZAF";
         }
-        $country_name = Country::get_country_name($country_code);
+        $pages = Country::get_cities_page_count($country_limit,$country_code);
+        $country_name = Country::get_name($country_code);
         $countries = Country::get_names();
-        $cities = City::get_country_cities($country_code,10,0);
+        $cities = City::get_by_country($country_code,$country_limit,0);
         
         $city_id = filter_input(INPUT_GET, 'city_id', FILTER_SANITIZE_STRING);
         if ($city_id == NULL || $city_id == FALSE) {
