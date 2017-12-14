@@ -7,12 +7,12 @@ ini_set("display_errors", 1);
 
 <!-- the head section -->
 <head>
-    <title>PRT2110 TEST ASSIGNMENT</title>
+    <title>AviaCo :: <?= $title;?></title>
     <link rel="stylesheet" type="text/css"   href="<?= PATH;?>/root/usr/css/main.css" />
 </head>
 
 <!-- the body section -->
-<body><?php if(empty($error_message)){?>
+<body onload="load()"><?php if(empty($error_message)){?>
     <header>
     <h1>AviaCo</h1>
     <p>the Air for the People</p><br/>

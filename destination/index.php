@@ -14,6 +14,7 @@ if ($action == NULL) {
 }
 switch ($action) {
     case 'destionations':
+        $title = 'Destinations';
         $country_limit = 10;
         $country_code = filter_input(INPUT_GET, 'country_code', FILTER_SANITIZE_STRING);
         if ($country_code == NULL || $country_code == FALSE) {

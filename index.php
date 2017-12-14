@@ -13,6 +13,7 @@ if ($action == NULL) {
 }
 switch ($action) {
     case 'model_avg':
+        $title = "Consumption";
         $model_code = filter_input(INPUT_GET, 'model_code', FILTER_SANITIZE_STRING);
         if ($model_code == NULL || $model_code == FALSE) {
             $model_code = "C-90A";
@@ -23,6 +24,7 @@ switch ($action) {
         require_once dirname(__FILE__, 1) . ('/root/view/content/model_avg.php');
         break;
     case 'engine_service':
+        $title = 'Service';
         $hours = filter_input(INPUT_POST, 'hours');
         if ($hours == NULL || $hours == FALSE) {
             $hours = "20";
@@ -31,6 +33,7 @@ switch ($action) {
         require_once dirname(__FILE__, 1) . ('/root/view/content/engine_service.php');
         break;
     case 'med_exam':
+        $title = 'Exam';
         $days = filter_input(INPUT_POST, 'days');
         if ($days == NULL || $days == FALSE) {
             $days = "30";
@@ -39,6 +42,7 @@ switch ($action) {
         require_once dirname(__FILE__, 1) . ('/root/view/content/med_exam.php');
         break;
     case 'rating_pilots':
+        $title = 'Rating';
         $rating_code = filter_input(INPUT_GET, 'rating_code', FILTER_SANITIZE_STRING);
         if ($rating_code == NULL || $rating_code == FALSE) {
             $rating_code = "CFI";
@@ -49,6 +53,7 @@ switch ($action) {
         require_once dirname(__FILE__, 1) . ('/root/view/content/rating_pilots.php');
         break;
     case 'update_pilot_rating':
+        $title = 'Pilot';
         $emp_num = filter_input(INPUT_GET, 'emp_num', FILTER_SANITIZE_STRING);
         if ($emp_num == NULL || $emp_num == FALSE) {
             $emp_num = "101";
