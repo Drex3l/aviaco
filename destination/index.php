@@ -20,12 +20,16 @@ switch ($action) {
         if ($country_code == NULL || $country_code == FALSE) {
             $country_code = "ZAF";
         }
+        $page = intval(filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING));
+        if ($page == NULL || $page == FALSE) {
+            $page = 1;
+        }
         $pages = Country::get_cities_page_count($country_limit,$country_code);
         $country_name = Country::get_name($country_code);
         $countries = Country::get_names();
-        $cities = City::get_by_country($country_code,$country_limit,0);
+        $cities = City::get_by_country($country_code,$country_limit,$page-1);
         
-        $city_id = filter_input(INPUT_GET, 'city_id', FILTER_SANITIZE_STRING);
+        $city_id = intval(filter_input(INPUT_GET, 'city_id', FILTER_SANITIZE_STRING));
         if ($city_id == NULL || $city_id == FALSE) {
             $city_id = "712";
         }
