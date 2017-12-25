@@ -34,7 +34,11 @@ switch ($action) {
             $city_id = "712";
         }
         $city = City::get_name($city_id);
+        $destinations = Destination::get_records($city_id);
         require_once dirname(__FILE__, 1) . ('/view/list.php');
+        break;
+    case 'add_forms':
+        echo 'hi';
         break;
     default :
         header("location:../?action=$action");

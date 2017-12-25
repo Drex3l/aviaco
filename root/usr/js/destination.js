@@ -1,5 +1,5 @@
 
-function loadCities(country,city,limit,page)
+function loadCities(country,city,limit)
 {
     if (window.XMLHttpRequest)
     {
@@ -15,9 +15,8 @@ function loadCities(country,city,limit,page)
             document.getElementById("cityList").innerHTML = this.responseText;
         }
     };
-    xmlhttp.open("GET", "view/cities.php?country_code=" + country+"&city="+city+"&limit="+limit+"&page="+1, true);
+    xmlhttp.open("GET", "view/cities.php?country_code=" + country+"&city_id="+city+"&limit="+limit+"&page="+1, true);
     xmlhttp.send();
-//    window.alert(page);
 }
 function popupTogle(id)
 {

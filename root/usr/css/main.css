@@ -1,4 +1,3 @@
-*{/*box-sizing: border-box*/}
 html {background-color: #E4E4E4;}
 body {margin-top: 0;font-family: Arial, Helvetica, sans-serif;width: 900px;margin: 0 auto;background-color: white;border: 1px solid #001963;}
 div.no_script{padding: 0 1em}
@@ -15,7 +14,8 @@ footer {clear: both;margin-top: 1em;padding-right: 1em;border-top: 2px solid bla
 footer p {text-align: right;font-size: 80%;margin: 1em 0;}
 body{position: relative}
 
-h1 {font-size: 150%;margin: 0;padding: .5em 0 .25em;}
+h1 {font-size: 150%;margin: 0;padding: .5em 0 .25em}
+main h1{;font-weight: 100;font-family: 'aGENCY fb';  text-transform: uppercase;color: rgba(0,0,0,.6)}
 h2 {font-size: 120%;margin: 0;padding: .25em 0 .25em ;}
 h1,h2 {color: black;}
 h2.selected{font-style: italic;color: rgba(0,0,0,.4);position: absolute;right: 1em;bottom: 2em}
@@ -33,8 +33,8 @@ a:active, a:focus, a:hover { border-bottom-width: medium; }
 a.selected{ border-bottom: thin solid;font-style: normal;font-weight: 700;color: #000}
 
 table { border: none; border-spacing:0; border-collapse: collapse;}
-td, th {border: 1px dashed #001963;padding: .2em .5em .2em .5em;text-align: left;}
-#models {font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;border-collapse: collapse;min-width: 200px;}
+td, th {padding: 0em .5em;text-align: left;}
+#models {font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;border-collapse: collapse}
 #models td, #customers th {border: 1px solid #ddd;padding: 8px;}
 #models tr:nth-child(even){background-color: #f2f2f2;}
 #models tr:hover {background-color: #ddd;}

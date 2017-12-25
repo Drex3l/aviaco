@@ -6,7 +6,7 @@
         require_once dirname(__FILE__, 2) . ('/model/datasource.php');
 
         $country_code = $_GET['country_code'];
-        $city_id = intval($_GET['city']);
+        $city_id = intval($_GET['city_id']);
         $country_limit = $_GET['limit'];
         $page = $_GET['page'];
         $pages = Country::get_cities_page_count($country_limit,$country_code);

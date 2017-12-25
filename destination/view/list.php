@@ -14,7 +14,7 @@ require_once dirname(__FILE__,3).'/root/view/face/header.php';
         <nav>
             <h2>
                 Cities
-                <select name="countries" title="<?= $city['Name'];?>" onchange="loadCities(this.value,this.title,<?=$country_limit;?>,<?= $page;?>)">
+                <select name="countries" title="<?= $city_id;?>" onchange="loadCities(this.value,this.title,<?=$country_limit;?>)">
                 <?php                foreach ($countries as $country){?>
                     <option value="<?= $country['Code']; ?>" <?php if($country_code === $country['Code']){echo 'selected';}?>><?= $country['Name'] ?></option>
                 <?php }?>
@@ -80,12 +80,42 @@ require_once dirname(__FILE__,3).'/root/view/face/header.php';
                     </style>
                 </div>
             </ul>
-            
         </nav>
     </aside>
-    <section>
+    
+    <section style="max-height: 320px;overflow-y: auto">
         <h2 class="right selected"><?= $city['Name'].', '.$city['District']; ?></h2>
+        <table id="models" style="width: 100%">
+            <tr style="/*position: fixed;width: 100%*/">
+                <th>Charter Date</th>
+                <th>Aircraft</th>
+                <th>Customer</th>
+                <th>Pilot</th>
+            </tr>
+            <?php
+            foreach ($destinations as $record){
+                echo '<tr>';
+                if(is_array($record)){
+                    echo '<td>'.$record['DATE'].'</td>';
+                    echo '<td>'.$record['AIRCRAFT'].'</td>';
+                    echo '<td>'.$record['CUSTOMER'].'</td>';
+                    echo '<td>'.$record['PILOT'].'</td>';
+                } else {
+                    echo '<td>'.$destinations['DATE'].'</td>';
+                    echo '<td>'.$destinations['AIRCRAFT'].'</td>';
+                    echo '<td>'.$destinations['CUSTOMER'].'</td>';
+                    echo '<td>'.$destinations['PILOT'].'</td>';
+                    break;
+                }
+                echo '</tr>';
+            }
+            ?>
+        </table>
+        <p class="last_paragraph">
+            <a href="?action=add_forms">Add New Charter</a>
+        </p>
     </section>
+    <BR/>
 </main>
 <?php
 require_once dirname(__FILE__,3).'/root/view/face/footer.php';

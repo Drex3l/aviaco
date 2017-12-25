@@ -1,4 +1,13 @@
 <?php
+
+abstract class Destination {
+
+    public static function get_records($airport) {
+        return dbHandler::DQL('CALL sp_getCharters(:airport)', array(':airport'=>$airport));
+    }
+
+}
+
 abstract class Country{
     public static function get_names(){
         return dbHandler::DQL('select Code, Name from world.country ORDER BY Name');
