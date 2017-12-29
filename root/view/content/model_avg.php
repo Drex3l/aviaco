@@ -20,7 +20,7 @@
 
     <section>
         <!-- display a table of products -->
-        <table id="models" >
+        <table class="fancy" >
             <tr>
                 <th>AVERAGE FUEL</th>
                 <th>AVERAGE OIL</th>

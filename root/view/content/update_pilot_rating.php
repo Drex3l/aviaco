@@ -24,7 +24,7 @@
         <input type="hidden" name="action" value="rate_list"/>
         <ul>
         <?php foreach ($ratings as $rating) : ?>
-            <li><span><input type="checkbox" name="rating[]" value="<?= $rating['RTG_CODE']; ?> " <?php if(Rating::check($pilot_data['ID'],$rating['RTG_CODE'])){?>checked<?php }?> /><?= $rating['RTG_CODE']; ?></span>
+            <li><label><input type="checkbox" name="rating[]" value="<?= $rating['RTG_CODE']; ?> " <?php if(Rating::check($pilot_data['ID'],$rating['RTG_CODE'])){?>checked<?php }?> /><?= $rating['RTG_CODE']; ?></label>
             </li>
         <?php endforeach; ?>
         </ul>
@@ -36,7 +36,7 @@
 
     <section>
         <!-- display a table of products -->
-        <table id="models" >
+        <table class="fancy">
             <tr>
                 <th>FIELD</th>
                 <th>DATA</th>

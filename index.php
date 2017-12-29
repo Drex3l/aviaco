@@ -2,7 +2,7 @@
 
 require_once('root/epiqworx/epiqrithm.php');
 require_once('root/epiqworx/db/handler.php');
-require_once('root/model/datasource.php');
+require_once('root/model.php');
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -75,7 +75,7 @@ switch ($action) {
             }
         }
         Employee::update_pilot_rating($featureList, $empID);
-        header("location: ?action=update_pil_rating&emp_num=$empID");
+        header("location: ?action=update_pilot_rating&emp_num=$empID");
         break;
     case 'destionations':
         header('location: destination');
@@ -86,6 +86,10 @@ switch ($action) {
         break;
     case 'browser':
         print_r(WebTools::getBrowser());
+//        echo WebTools::getBrowser()['name'];
         //echo $_SERVER['HTTP_USER_AGENT'];
+        break;
+    default :
+        echo "case not handled for action '<strong>$action</strong>'";
         break;
 }

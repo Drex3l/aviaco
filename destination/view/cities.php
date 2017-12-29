@@ -3,7 +3,7 @@
     <body>
         <?php
         require_once dirname(__FILE__, 3) . '/root/epiqworx/db/handler.php';
-        require_once dirname(__FILE__, 2) . ('/model/datasource.php');
+        require_once dirname(__FILE__, 2) . ('/model.php');
 
         $country_code = $_GET['country_code'];
         $city_id = intval($_GET['city_id']);

@@ -12,7 +12,8 @@ function loadCities(country,city,limit)
     {
         if (this.readyState == 4 && this.status == 200)
         {
-            document.getElementById("cityList").innerHTML = this.responseText;
+            document.getElementById("cityList").innerHTML = this.responseText;  // override content
+            document.getElementById("charter-add").href = "?action=new_charter&country_code="+country; // update hyperlink query string
         }
     };
     xmlhttp.open("GET", "view/cities.php?country_code=" + country+"&city_id="+city+"&limit="+limit+"&page="+1, true);
