@@ -33,7 +33,7 @@ abstract class Employee {
     }
 
     public static function update_pilot_rating($items, $pilot) {
-        dbHandler::Execute('CALL sp_ratePilot(:items,:pilot)',array(':items'=>$items,':pilot'=>$pilot));
+        return dbHandler::Execute('CALL sp_ratePilot(:items,:pilot)',array(':items'=>$items,':pilot'=>$pilot));
     }
 
 }

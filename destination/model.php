@@ -5,7 +5,10 @@ abstract class Charter {
     public static function get_records($airport) {
         return dbHandler::DQL('CALL sp_getCharters(:airport)', array(':airport'=>$airport));
     }
-
+    public static function add_record($plane,$city,$date,$distance,$fuel,$oil,$flyhours,$waitHours,$pilot,$copilot,$customer){
+        $param = array(':plane'=>$plane,':city'=>$city,':date'=>$date,':distance'=>$distance,':fuel'=>$fuel,':oil'=>$oil,':flyHours'=>$flyhours,':waitHours'=>$waitHours,':pilot'=>$pilot,':copilot'=>$copilot,':customer'=>$customer);
+        return dbHandler::Execute('call sp_addCharter(:plane,:city,:date,:distance,:fuel,:oil,:flyHours,:waitHours,:pilot,:copilot,:customer)',$param);
+    }
 }
 
 abstract class Country{

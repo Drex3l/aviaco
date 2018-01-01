@@ -6,7 +6,7 @@
         <h2>Pilots</h2>
         <nav>
         <form action="." method="post">
-        <input type="hidden" name="action" value="update_pilot_rating"/>
+        <!--<input type="hidden" name="action" value="update_pilot_rating"/>-->
         <ul>
         <?php foreach ($employee as $record) : ?>
             <li><a href="?action=update_pilot_rating&emp_num=<?= $record['ID']; ?>" <?php if($record['ID'] === $pilot_data['ID']){ echo 'class="selected"';} ?> > <?= $record['PILOT']; ?></a>

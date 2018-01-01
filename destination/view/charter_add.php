@@ -6,6 +6,8 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
     <h2 class="right selected"><?= $country_name; ?></h2>
     <form name="add_charter" action="." method="post" id="add_charter" class="aligned">
         <input type="hidden" name="action" value="add_charter"/>
+        <input type="hidden" name="country_code" value="<?= $country_code;?>"/>
+        
         <label>Select  Aircraft:</label>
         <select name="aircraft">
             <?php foreach ($aircraft as $ac){
@@ -28,12 +30,12 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
             }?>
         </select>
         <br/>
-        <label>Charter Date:</label><input type="date" name="date" required /><br/>
-        <label>Charter Distance:</label><input type="number" name="distance" required /><br/>
-        <label>Fuel Amount Used:</label><input type="number" name="fuel" required /><br/>
-        <label>Oil Amount used:</label><input type="number" name="oil" required /><br/>
-        <label>Flying Hours:</label><input type="number" name="fly_hours" required /><br/>
-        <label>Waiting hours:</label><input type="number" name="wait_hours" required /><br/>
+        <label>Charter Date:</label><input type="date" name="date" required min="<?= date('Y-m-d');?>"/><br/>
+        <label>Charter Distance:</label><input type="number" name="distance" required min="1" /><br/>
+        <label>Fuel Amount Used:</label><input type="number" step="0.01" name="fuel" required min=".5"/><br/>
+        <label>Oil Amount used:</label><input type="number" name="oil" required step=".01" min=".5"/><br/>
+        <label>Flying Hours:</label><input type="number" name="fly_hours" required min=".25" step=".05"/><br/>
+        <label>Waiting hours:</label><input type="number" name="wait_hours" required min="0" step=".05"/><br/>
         <label>Select  Pilot:</label>
         <select name="pilot">
             <?php foreach ($pilots as $pilot){

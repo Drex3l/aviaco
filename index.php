@@ -83,6 +83,7 @@ switch ($action) {
     case 'print':
         Debug::testPrint($_GET['txt']);
         echo 'OK!';
+//        echo date('Y-m-d');
         break;
     case 'browser':
         print_r(WebTools::getBrowser());

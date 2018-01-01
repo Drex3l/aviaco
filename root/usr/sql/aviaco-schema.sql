@@ -421,10 +421,9 @@ IN fuel FLOAT,
 IN oil INT(1) UNSIGNED,
 IN flyHours FLOAT,
 IN waitHours FLOAT,
-IN passenger BIGINT UNSIGNED,
-IN destination INT(11),
 IN pil BIGINT UNSIGNED,
-IN copilot BIGINT UNSIGNED
+IN copilot BIGINT UNSIGNED,
+IN passenger BIGINT UNSIGNED
 )
 BEGIN
 	DECLARE CHECKPOINT  TINYINT UNSIGNED DEFAULT 0;
@@ -437,13 +436,17 @@ BEGIN
 	START TRANSACTION;
 		IF distance = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INVALID DISTANCE'; END IF;
 
-		INSERT INTO charter VALUES(\N,departure,plane,0,flyHours,waitHours,fuel,oil,passenger,destination);				SET CHECKPOINT = 1;
+		INSERT INTO charter VALUES(\N,departure,plane,0,flyHours,waitHours,fuel,oil,passenger,airport);				SET CHECKPOINT = 1;
 		SET @charter = (SELECT CHAR_TRIP FROM charter WHERE CHAR_DISTANCE = 0);	SET CHECKPOINT = 2;
 		UPDATE charter SET CHAR_DISTANCE = distance WHERE CHAR_DISTANCE = 0;	SET CHECKPOINT = 3;
 		
-		UPDATE aircraft SET AC_TTAF = (SELECT AC_TTAF FROM aircraft WHERE AC_NUMBER = plane) + flyHours WHERE AC_NUMBER = plane;	SET CHECKPOINT = 4;
-		UPDATE aircraft SET AC_TTEL = (SELECT AC_TTEL FROM aircraft WHERE AC_NUMBER = plane) + flyHours WHERE AC_NUMBER = plane;	SET CHECKPOINT = 5;
-		UPDATE aircraft SET AC_TTER = (SELECT AC_TTER FROM aircraft WHERE AC_NUMBER = plane) + flyHours WHERE AC_NUMBER = plane;	SET CHECKPOINT = 6;
+                SET @AC_TTAF = ((SELECT AC_TTAF FROM aircraft WHERE AC_NUMBER = plane) + flyHours); 
+                SET @AC_TTEL = ((SELECT AC_TTEL FROM aircraft WHERE AC_NUMBER = plane) + flyHours);
+                SET @AC_TTER = ((SELECT AC_TTER FROM aircraft WHERE AC_NUMBER = plane) + flyHours);
+
+		UPDATE aircraft SET AC_TTAF = @AC_TTAF WHERE AC_NUMBER = plane;	SET CHECKPOINT = 4;
+		UPDATE aircraft SET AC_TTEL = @AC_TTEL WHERE AC_NUMBER = plane;	SET CHECKPOINT = 5;
+		UPDATE aircraft SET AC_TTER = @AC_TTER WHERE AC_NUMBER = plane;	SET CHECKPOINT = 6;
 
 		SET @balance = (SELECT CUS_BALANCE FROM customer WHERE CUS_CODE = passenger);	SET CHECKPOINT = 7;
 		SET @charge = (SELECT MOD_CHG_MILE FROM model WHERE MOD_CODE = (SELECT MOD_CODE FROM aircraft WHERE AC_NUMBER = plane));	SET CHECKPOINT = 8;
@@ -718,7 +721,7 @@ USE `aviaco`;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `charter_list` AS select `ct`.`CHAR_TRIP` AS `ID`,`ct`.`CHAR_DATE` AS `DATE`,`ct`.`AC_NUMBER` AS `AIRCRAFT`,concat(`c`.`CUS_FNAME`,' ',`c`.`CUS_LNAME`) AS `CUSTOMER`,`e`.`EMP_NUM` AS `EMP_NUM`,`ct`.`AIRPORT_CODE` AS `AIRPORT_CODE` from ((((`charter` `ct` join `customer` `c`) join `crew` `cr`) join `employee` `e`) join `pilot` `p`) where ((`ct`.`CUS_CODE` = `c`.`CUS_CODE`) and (`ct`.`CHAR_TRIP` = `cr`.`CHAR_TRIP`) and (`cr`.`EMP_NUM` = `e`.`EMP_NUM`) and (`e`.`EMP_NUM` = `p`.`EMP_NUM`)) */;
+/*!50001 VIEW `charter_list` AS select `ct`.`CHAR_TRIP` AS `ID`,`ct`.`CHAR_DATE` AS `DATE`,`ct`.`AC_NUMBER` AS `AIRCRAFT`,concat(`c`.`CUS_FNAME`,' ',`c`.`CUS_LNAME`) AS `CUSTOMER`,`e`.`EMP_NUM` AS `EMP_NUM`,`ct`.`AIRPORT_CODE` AS `AIRPORT_CODE` from ((((`charter` `ct` join `customer` `c`) join `crew` `cr`) join `employee` `e`) join `pilot` `p`) where ((`ct`.`CUS_CODE` = `c`.`CUS_CODE`) and (`ct`.`CHAR_TRIP` = `cr`.`CHAR_TRIP`) and (`cr`.`EMP_NUM` = `e`.`EMP_NUM`) and (`cr`.`CREW_JOB` = 'Pilot') and (`e`.`EMP_NUM` = `p`.`EMP_NUM`)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -786,4 +789,4 @@ USE `aviaco`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-01 15:57:37
+-- Dump completed on 2018-01-02  0:22:30
