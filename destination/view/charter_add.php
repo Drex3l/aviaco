@@ -38,9 +38,9 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         <select name="pilot">
             <?php foreach ($pilots as $pilot){
                 if(is_array($pilot)){?>
-            <option value="<?= $pilot['EMP_NUM'];?>"><?= $pilot['NAME'];?></option>
+            <option value="<?= $pilot['ID'];?>"><?= $pilot['PILOT'];?></option>
                 <?php } else {?>
-                    <option value="<?= $pilots['EMP_NUM'];?>"><?= $pilots['NAME'];?></option>
+                    <option value="<?= $pilots['ID'];?>"><?= $pilots['PILOT'];?></option>
                 <?php }
             }?>
         </select>
@@ -49,9 +49,9 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         <select name="co_pilot">
             <?php foreach ($pilots as $pilot){
                 if(is_array($pilot)){?>
-            <option value="<?= $pilot['EMP_NUM'];?>"><?= $pilot['NAME'];?></option>
+            <option value="<?= $pilot['ID'];?>"><?= $pilot['PILOT'];?></option>
                 <?php } else {?>
-                    <option value="<?= $pilots['EMP_NUM'];?>"><?= $pilots['NAME'];?></option>
+                    <option value="<?= $pilots['ID'];?>"><?= $pilots['PILOT'];?></option>
                 <?php }
             }?>
         </select>

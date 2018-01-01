@@ -1,6 +1,6 @@
 <?php require_once dirname(__FILE__,3). '/view/face/header.php'; ?>
 <main>
-    <h1>AviaCo Aircraft Models</h1>
+    <h1>Aircraft Models</h1>
 
     <aside>
         <!-- display a list of departments -->
@@ -13,7 +13,9 @@
                 <?= $model['MOD_NAME']; ?>
             </a>
             </li>
-        <?php endforeach; ?>
+        <?php endforeach;
+        if(!isset($model)){echo "<li>list empty</li>";}
+        ?>
         </ul>
         </nav>
     </aside>
@@ -22,13 +24,17 @@
         <!-- display a table of products -->
         <table class="fancy" >
             <tr>
-                <th>AVERAGE FUEL</th>
-                <th>AVERAGE OIL</th>
+                <th>Average Fuel</th>
+                <th>Average Oil</th>
             </tr>
+            <?php if(count($AVG)>0){?>
             <tr>
                 <td><?= $AVG['FUEL']; ?></td>
                 <td><?= $AVG['OIL']; ?></td>
             </tr>
+            <?php } else {
+     echo "<tr><td colspan='2'>charter empty</td></tr>";
+        }?>
         </table>
         <h2 class="right selected"><?= $model_name; ?></h2>
     </section>

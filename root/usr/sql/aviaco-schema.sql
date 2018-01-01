@@ -35,9 +35,9 @@ DROP TABLE IF EXISTS `aircraft`;
 CREATE TABLE `aircraft` (
   `AC_NUMBER` varchar(5) NOT NULL,
   `MOD_CODE` varchar(8) DEFAULT NULL,
-  `AC_TTAF` varchar(6) DEFAULT NULL,
-  `AC_TTEL` varchar(6) DEFAULT NULL,
-  `AC_TTER` varchar(6) DEFAULT NULL,
+  `AC_TTAF` double(16,2) DEFAULT NULL,
+  `AC_TTEl` double(16,2) DEFAULT NULL,
+  `AC_TTER` double(16,2) DEFAULT NULL,
   PRIMARY KEY (`AC_NUMBER`),
   KEY `FK_MODEL_MODCODE` (`MOD_CODE`),
   CONSTRAINT `FK_MODEL_MODCODE` FOREIGN KEY (`MOD_CODE`) REFERENCES `model` (`MOD_CODE`)
@@ -67,23 +67,22 @@ DROP TABLE IF EXISTS `charter`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `charter` (
   `CHAR_TRIP` bigint(20) unsigned NOT NULL,
-  `CHAR_DATE` varchar(10) DEFAULT NULL,
+  `CHAR_DATE` date DEFAULT NULL,
   `AC_NUMBER` varchar(5) DEFAULT NULL,
-  `CHAR_DESTINATION` varchar(3) DEFAULT NULL,
-  `CHAR_DISTANCE` int(4) DEFAULT NULL,
-  `CHAR_HOURS_FLOWN` varchar(3) DEFAULT NULL,
-  `CHAR_HOURS_WAIT` varchar(4) DEFAULT NULL,
-  `CHAR_FUEL_GALLONS` varchar(5) DEFAULT NULL,
-  `CHAR_OIL_QTS` int(1) DEFAULT NULL,
-  `CUS_CODE` int(5) DEFAULT NULL,
+  `CHAR_DISTANCE` int(4) unsigned DEFAULT NULL,
+  `CHAR_HOURS_FLOWN` float DEFAULT NULL,
+  `CHAR_HOURS_WAIT` float DEFAULT NULL,
+  `CHAR_FUEL_GALLONS` float DEFAULT NULL,
+  `CHAR_OIL_QTS` int(1) unsigned DEFAULT NULL,
+  `CUS_CODE` bigint(20) unsigned DEFAULT NULL,
   `AIRPORT_CODE` int(11) NOT NULL DEFAULT '712',
   PRIMARY KEY (`CHAR_TRIP`),
   KEY `FK_AIRCRAFT_ACNUMBER` (`AC_NUMBER`),
   KEY `FK_CUSTOMER_CUSCODE` (`CUS_CODE`),
   KEY `AIRPORT_CODE` (`AIRPORT_CODE`),
-  CONSTRAINT `FK_AIRCRAFT_ACNUMBER` FOREIGN KEY (`AC_NUMBER`) REFERENCES `aircraft` (`AC_NUMBER`),
-  CONSTRAINT `FK_CUSTOMER_CUSCODE` FOREIGN KEY (`CUS_CODE`) REFERENCES `customer` (`CUS_CODE`),
-  CONSTRAINT `charter_ibfk_1` FOREIGN KEY (`AIRPORT_CODE`) REFERENCES `world`.`city` (`ID`)
+  CONSTRAINT `charter_ibfk_1` FOREIGN KEY (`AIRPORT_CODE`) REFERENCES `world`.`city` (`ID`),
+  CONSTRAINT `charter_ibfk_2` FOREIGN KEY (`CUS_CODE`) REFERENCES `customer` (`CUS_CODE`) ON DELETE CASCADE,
+  CONSTRAINT `charter_ibfk_3` FOREIGN KEY (`AC_NUMBER`) REFERENCES `aircraft` (`AC_NUMBER`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -140,13 +139,14 @@ DROP TABLE IF EXISTS `crew`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `crew` (
-  `CHAR_TRIP` bigint(20) unsigned DEFAULT NULL,
-  `EMP_NUM` int(3) DEFAULT NULL,
+  `CHAR_TRIP` bigint(20) unsigned NOT NULL,
+  `EMP_NUM` bigint(20) unsigned NOT NULL,
   `CREW_JOB` enum('Pilot','Copilot') DEFAULT NULL,
+  PRIMARY KEY (`CHAR_TRIP`,`EMP_NUM`),
   KEY `FK_CHARTER_CHARTRIP` (`CHAR_TRIP`),
   KEY `FK_EMPLOYEE_EMP_NUM` (`EMP_NUM`),
-  CONSTRAINT `FK_EMPLOYEE_EMP_NUM` FOREIGN KEY (`EMP_NUM`) REFERENCES `employee` (`EMP_NUM`),
-  CONSTRAINT `crew_ibfk_1` FOREIGN KEY (`CHAR_TRIP`) REFERENCES `charter` (`CHAR_TRIP`)
+  CONSTRAINT `crew_ibfk_1` FOREIGN KEY (`CHAR_TRIP`) REFERENCES `charter` (`CHAR_TRIP`) ON DELETE CASCADE,
+  CONSTRAINT `crew_ibfk_2` FOREIGN KEY (`EMP_NUM`) REFERENCES `employee` (`EMP_NUM`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -158,13 +158,13 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer` (
-  `CUS_CODE` int(5) NOT NULL,
+  `CUS_CODE` bigint(20) unsigned NOT NULL,
   `CUS_LNAME` varchar(8) DEFAULT NULL,
   `CUS_FNAME` varchar(6) DEFAULT NULL,
   `CUS_INITIAL` varchar(1) DEFAULT NULL,
   `CUS_AREACODE` int(3) DEFAULT NULL,
   `CUS_PHONE` varchar(8) DEFAULT NULL,
-  `CUS_BALANCE` varchar(7) DEFAULT NULL,
+  `CUS_BALANCE` double(16,2) DEFAULT NULL,
   PRIMARY KEY (`CUS_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -177,13 +177,13 @@ DROP TABLE IF EXISTS `earnedrating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `earnedrating` (
-  `EMP_NUM` int(3) NOT NULL,
+  `EMP_NUM` bigint(20) unsigned NOT NULL,
   `RTG_CODE` varchar(5) NOT NULL,
   `EARNRTG_DATE` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`EMP_NUM`,`RTG_CODE`),
   KEY `FK_RATING_RTGCODE` (`RTG_CODE`),
-  CONSTRAINT `FK_PILOT_EMPNUM` FOREIGN KEY (`EMP_NUM`) REFERENCES `pilot` (`EMP_NUM`),
-  CONSTRAINT `FK_RATING_RTGCODE` FOREIGN KEY (`RTG_CODE`) REFERENCES `rating` (`RTG_CODE`)
+  CONSTRAINT `FK_RATING_RTGCODE` FOREIGN KEY (`RTG_CODE`) REFERENCES `rating` (`RTG_CODE`),
+  CONSTRAINT `earnedrating_ibfk_1` FOREIGN KEY (`EMP_NUM`) REFERENCES `pilot` (`EMP_NUM`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -195,7 +195,7 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee` (
-  `EMP_NUM` int(3) NOT NULL,
+  `EMP_NUM` bigint(20) unsigned NOT NULL,
   `EMP_TITLE` varchar(4) DEFAULT NULL,
   `EMP_LNAME` varchar(10) DEFAULT NULL,
   `EMP_FNAME` varchar(9) DEFAULT NULL,
@@ -233,7 +233,7 @@ CREATE TABLE `model` (
   `MOD_MANUFACTURER` varchar(10) DEFAULT NULL,
   `MOD_NAME` varchar(16) DEFAULT NULL,
   `MOD_SEATS` int(2) DEFAULT NULL,
-  `MOD_CHG_MILE` varchar(4) DEFAULT NULL,
+  `MOD_CHG_MILE` double(16,2) DEFAULT NULL,
   PRIMARY KEY (`MOD_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -246,14 +246,14 @@ DROP TABLE IF EXISTS `pilot`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pilot` (
-  `EMP_NUM` int(3) NOT NULL,
+  `EMP_NUM` bigint(20) unsigned NOT NULL,
   `PIL_LICENSE` varchar(3) DEFAULT NULL,
   `PIL_RATINGS` varchar(26) DEFAULT NULL,
   `PIL_MED_TYPE` int(1) DEFAULT NULL,
   `PIL_MED_DATE` date DEFAULT NULL,
   `PIL_PT135_DATE` date DEFAULT NULL,
   PRIMARY KEY (`EMP_NUM`),
-  CONSTRAINT `FK_EMPLOYEE_EMPNUM` FOREIGN KEY (`EMP_NUM`) REFERENCES `employee` (`EMP_NUM`)
+  CONSTRAINT `pilot_ibfk_1` FOREIGN KEY (`EMP_NUM`) REFERENCES `employee` (`EMP_NUM`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -288,20 +288,6 @@ SET character_set_client = utf8;
  1 AS `PIL_RATINGS`,
  1 AS `EARNRTG_DATE`,
  1 AS `FLIGHTS`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary table structure for view `pilot_meddate_list`
---
-
-DROP TABLE IF EXISTS `pilot_meddate_list`;
-/*!50001 DROP VIEW IF EXISTS `pilot_meddate_list`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `pilot_meddate_list` AS SELECT 
- 1 AS `ID`,
- 1 AS `PILOT`,
- 1 AS `PIL_MED_DATE`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -416,6 +402,62 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_addCharter` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_addCharter`(
+IN plane VARCHAR(5),
+IN airport INT(11),
+IN departure DATE,
+IN distance INT(4) UNSIGNED,
+IN fuel FLOAT,
+IN oil INT(1) UNSIGNED,
+IN flyHours FLOAT,
+IN waitHours FLOAT,
+IN passenger BIGINT UNSIGNED,
+IN destination INT(11),
+IN pil BIGINT UNSIGNED,
+IN copilot BIGINT UNSIGNED
+)
+BEGIN
+	DECLARE CHECKPOINT  TINYINT UNSIGNED DEFAULT 0;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION,1265
+	BEGIN 
+		GET DIAGNOSTICS CONDITION 1 @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+		ROLLBACK;
+        	SELECT CONCAT('Error encountered, operation rollbacked. : C',LPAD(CHECKPOINT,2,'0'))  AS 'SQL EXCEPTION',@p1 AS CODE, @p2 AS DESCRIPTION;
+	END;
+	START TRANSACTION;
+		IF distance = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INVALID DISTANCE'; END IF;
+
+		INSERT INTO charter VALUES(\N,departure,plane,0,flyHours,waitHours,fuel,oil,passenger,destination);				SET CHECKPOINT = 1;
+		SET @charter = (SELECT CHAR_TRIP FROM charter WHERE CHAR_DISTANCE = 0);	SET CHECKPOINT = 2;
+		UPDATE charter SET CHAR_DISTANCE = distance WHERE CHAR_DISTANCE = 0;	SET CHECKPOINT = 3;
+		
+		UPDATE aircraft SET AC_TTAF = (SELECT AC_TTAF FROM aircraft WHERE AC_NUMBER = plane) + flyHours WHERE AC_NUMBER = plane;	SET CHECKPOINT = 4;
+		UPDATE aircraft SET AC_TTEL = (SELECT AC_TTEL FROM aircraft WHERE AC_NUMBER = plane) + flyHours WHERE AC_NUMBER = plane;	SET CHECKPOINT = 5;
+		UPDATE aircraft SET AC_TTER = (SELECT AC_TTER FROM aircraft WHERE AC_NUMBER = plane) + flyHours WHERE AC_NUMBER = plane;	SET CHECKPOINT = 6;
+
+		SET @balance = (SELECT CUS_BALANCE FROM customer WHERE CUS_CODE = passenger);	SET CHECKPOINT = 7;
+		SET @charge = (SELECT MOD_CHG_MILE FROM model WHERE MOD_CODE = (SELECT MOD_CODE FROM aircraft WHERE AC_NUMBER = plane));	SET CHECKPOINT = 8;
+		
+		UPDATE customer SET CUS_BALANCE = (@balance +(@charge * distance)) WHERE CUS_CODE = passenger;	SET CHECKPOINT = 9;
+		INSERT INTO crew VALUES(@charter,pil,'Pilot');			SET CHECKPOINT = 10;
+		INSERT INTO crew VALUES(@charter,copilot,'Copilot');		SET CHECKPOINT = 11;
+	COMMIT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `sp_checkAircraft` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -444,7 +486,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getCharters`(IN destination INT(11))
-SELECT DATE, AIRCRAFT, CUSTOMER, CONCAT(`EMP_FNAME`,' ',`EMP_LNAME`) PILOT, e.EMP_NUM FROM charter_list l, employee e WHERE l.EMP_NUM = e.EMP_NUM AND AIRPORT_CODE = destination ;;
+SELECT DATE, AIRCRAFT, CUSTOMER, CONCAT(`EMP_FNAME`,' ',`EMP_LNAME`) PILOT, e.EMP_NUM FROM charter_list l, employee e WHERE l.EMP_NUM = e.EMP_NUM AND AIRPORT_CODE = destination
+ORDER BY DATE ASC ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -501,16 +544,16 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getMembers`( IN item ENUM('C','E'))
+CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getMembers`( IN item ENUM('C','P'))
 BEGIN
 	CASE item
 	WHEN	'C'	THEN
 		BEGIN
 			SELECT CONCAT(CUS_FNAME,' ',CUS_LNAME) NAME, CUS_CODE FROM customer oRder by NAME;
 		END;
-	WHEN	'E'	THEN
+	WHEN	'P'	THEN
 		BEGIN
-			SELECT CONCAT(EMP_FNAME,' ',EMP_LNAME) NAME, e.EMP_NUM FROM employee e, pilot p WHERE e.EMP_NUM = p.EMP_NUM oRder by NAME;
+			SELECT e.EMP_NUM ID, CONCAT(EMP_FNAME,' ',EMP_LNAME) PILOT, PIL_MED_DATE FROM employee e, pilot p WHERE e.EMP_NUM = p.EMP_NUM oRder by PILOT;
 		END;
 	END CASE;
 END ;;
@@ -530,7 +573,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getModelAvegrage`(IN modelCode VARCHAR(8))
-SELECT FUEL, OIL FROM average_consumption WHERE MOD_CODE = modelCode ;;
+SELECT ROUND(FUEL,2) FUEL, ROUND(OIL,2) OIL FROM average_consumption WHERE MOD_CODE = modelCode ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -563,8 +606,8 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getPilotMedExam`(IN days TINYINT UNSIGNED)
-select PILOT from pilot_meddate_list WHERE DATE_ADD(PIL_MED_DATE, INTERVAL 1 YEAR) BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE,INTERVAL days DAY) ORDER BY PILOT ;;
+CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getPilotMedExam`(IN days SMALLINT UNSIGNED)
+select CONCAT(EMP_FNAME,' ',EMP_LNAME) PILOT from pilot_list WHERE DATE_ADD(PIL_MED_DATE, INTERVAL 1 YEAR) BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE,INTERVAL days DAY) ORDER BY PILOT ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -581,7 +624,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getRatingPilots`(IN rating VARCHAR(5))
-SELECT PILOT, HOURS FROM pilot_hours P, earnedrating R WHERE P.ID = R.EMP_NUM AND RTG_CODE = rating ;;
+SELECT PILOT, ROUND(HOURS) HOURS FROM pilot_hours P, earnedrating R WHERE P.ID = R.EMP_NUM AND RTG_CODE = rating ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -693,7 +736,7 @@ USE `aviaco`;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `engine_service` AS select `aircraft`.`AC_NUMBER` AS `AC_NUMBER`,(100 - (`aircraft`.`AC_TTEL` % 100)) AS `EL`,(100 - (`aircraft`.`AC_TTER` % 100)) AS `ER`,(500 - (`aircraft`.`AC_TTAF` % 500)) AS `AF` from `aircraft` */;
+/*!50001 VIEW `engine_service` AS select `aircraft`.`AC_NUMBER` AS `AC_NUMBER`,(100 - (`aircraft`.`AC_TTEl` % 100)) AS `EL`,(100 - (`aircraft`.`AC_TTER` % 100)) AS `ER`,(500 - (`aircraft`.`AC_TTAF` % 500)) AS `AF` from `aircraft` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -733,24 +776,6 @@ USE `aviaco`;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `pilot_meddate_list`
---
-
-/*!50001 DROP VIEW IF EXISTS `pilot_meddate_list`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `pilot_meddate_list` AS select `p`.`EMP_NUM` AS `ID`,concat(`e`.`EMP_FNAME`,' ',`e`.`EMP_LNAME`) AS `PILOT`,`p`.`PIL_MED_DATE` AS `PIL_MED_DATE` from (`employee` `e` join `pilot` `p`) where (`p`.`EMP_NUM` = `e`.`EMP_NUM`) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -761,4 +786,4 @@ USE `aviaco`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-29 23:54:33
+-- Dump completed on 2018-01-01 15:57:37

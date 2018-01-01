@@ -1,6 +1,6 @@
 <?php
 
-abstract class Destination {
+abstract class Charter {
 
     public static function get_records($airport) {
         return dbHandler::DQL('CALL sp_getCharters(:airport)', array(':airport'=>$airport));
@@ -43,10 +43,10 @@ abstract class Pilot {
         return dbHandler::DQL('CALL sp_getPilotInfo(:emp)', array(':emp' => $id));
     }
     public static function get_pilots(){
-        return dbHandler::DQL('call sp_getMembers("E")');
+        return dbHandler::DQL('call sp_getMembers("P")');
     }
 }
-abstract  class Customer{
+abstract class Customer{
     public static function get_customers(){
         return dbHandler::DQL('call sp_getMembers("C")');
     }

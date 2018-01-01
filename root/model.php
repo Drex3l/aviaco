@@ -29,7 +29,7 @@ abstract class Employee {
     }
 
     public static function get_records() {
-        return dbHandler::DQL('SELECT * FROM pilot_meddate_list');
+        return dbHandler::DQL('call sp_getMembers("P")');
     }
 
     public static function update_pilot_rating($items, $pilot) {

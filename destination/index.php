@@ -35,7 +35,7 @@ switch ($action) {
             $city_id = "712";
         }
         $city = City::get_name($city_id);
-        $destinations = Destination::get_records($city_id);
+        $destinations = Charter::get_records($city_id);
         require_once dirname(__FILE__, 1) . ('/view/list.php');
         break;
     case 'new_charter':

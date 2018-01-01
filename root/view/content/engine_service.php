@@ -8,7 +8,7 @@
         <nav>
         <form action="." method="post">
                     <input type="hidden" name="action"  value="engine_service">
-                    <input type="number" name="hours" value="<?= $hours;?>" ><br/>
+                    <input type="number" name="hours" value="<?= $hours;?>" min="1" ><br/>
                     <input type="submit" value="Preview">
                 </form><br/>
         </nav>
@@ -27,10 +27,10 @@
                     echo $aircraft['AC_NUMBER'];
                 } else {
                     echo $aircrafts['AC_NUMBER'];
-                    break;
                 }
                 echo '</td></tr>';
             }
+            if(empty($aircrafts['AC_NUMBER']) && !isset($aircraft)){echo "<tr><td>list empty</td></tr>";}
             ?>
         </table>
         <h2 class="right selected">Service within <?= $hours; ?> hours or less</h2>

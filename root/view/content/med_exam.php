@@ -8,7 +8,7 @@
         <nav>
         <form action="." method="post">
                     <input type="hidden" name="action"  value="med_exam">
-                    <input type="number" name="days" value="<?= $days;?>" ><br/>
+                    <input type="number" name="days" value="<?= $days;?>" min="1"><br/>
                     <input type="submit" value="Preview">
                 </form><br/>
         </nav>
@@ -31,6 +31,7 @@
                 }
                 echo '</td></tr>';
             }
+            if(empty($pilots['AC_NUMBER']) && !isset($pilot)){echo "<tr><td>list empty</td></tr>";}
             ?>
         </table>
         <h2 class="right selected">Examinations within <?= $days; ?> days or less</h2>

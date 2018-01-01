@@ -13,7 +13,9 @@
                 <?= $rating['RTG_CODE']; ?>
             </a>
             </li>
-        <?php endforeach; ?>
+        <?php endforeach; 
+        if(!isset($rating)){echo "<li>list empty</li>";}
+        ?>
         </ul>
         </nav>
     </aside>
@@ -22,8 +24,8 @@
         <!-- display a table of products -->
         <table class="fancy" >
             <tr>
-                <th>PILOT</th>
-                <th>TOTAL HOURS</th>
+                <th>Pilot</th>
+                <th>Total Hours</th>
             </tr>
             <?php
             foreach ($pilot_rating as $record){
@@ -38,6 +40,7 @@
                 }
                 echo '</tr>';
             }
+            if(empty($pilot_rating['PILOT']) && !isset($record)){echo "<tr><td colspan='2'>list empty</td></tr>";}
             ?>
         </table>
         <h2 class="right selected"><?= $rating_name; ?></h2>

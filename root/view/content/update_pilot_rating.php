@@ -38,8 +38,8 @@
         <!-- display a table of products -->
         <table class="fancy">
             <tr>
-                <th>FIELD</th>
-                <th>DATA</th>
+                <th>Field</th>
+                <th>Data</th>
             </tr>
             <tr><td>FIRST NAME</td> <td><?= $pilot_data['EMP_FNAME']; ?></td> </tr>
              <tr><td>LAST NAME</td> <td><?= $pilot_data['EMP_LNAME']; ?></td> </tr>
