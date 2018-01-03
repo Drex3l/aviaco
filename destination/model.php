@@ -7,7 +7,10 @@ abstract class Charter {
     }
     public static function add_record($plane,$city,$date,$distance,$fuel,$oil,$flyhours,$waitHours,$pilot,$copilot,$customer){
         $param = array(':plane'=>$plane,':city'=>$city,':date'=>$date,':distance'=>$distance,':fuel'=>$fuel,':oil'=>$oil,':flyHours'=>$flyhours,':waitHours'=>$waitHours,':pilot'=>$pilot,':copilot'=>$copilot,':customer'=>$customer);
-        return dbHandler::Execute('call sp_addCharter(:plane,:city,:date,:distance,:fuel,:oil,:flyHours,:waitHours,:pilot,:copilot,:customer)',$param);
+        dbHandler::Execute('call sp_addCharter(:plane,:city,:date,:distance,:fuel,:oil,:flyHours,:waitHours,:pilot,:copilot,:customer)',$param);
+    }
+    public static function delete_record($id){
+        dbHandler::Execute('DELETE FROM charter WHERE CHAR_TRIP = :id', array(':id'=>$id));
     }
 }
 

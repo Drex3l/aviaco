@@ -55,5 +55,15 @@ abstract class Rating {
     public static function check($empID, $rating_code) {
         return dbHandler::DQL('SELECT sf_checkRating(:emp , :rating) FIELD',array(':emp'=>$empID,':rating'=>$rating_code))['FIELD'];
     }
-
+    private static function get_employee_rating($emp) {
+        return dbHandler::DQL('SELECT r.* FROM rating r, earnedrating er WHERE r.RTG_CODE = er.RTG_CODE AND er.EMP_NUM = :emp', array(':emp'=>$emp));
+    }
+    public static function get_rating_string($emp){
+        $rating = self::get_employee_rating($emp);
+        $string = "";
+        foreach ($rating as $item){
+            $string .= ";".$item['RTG_CODE'];
+        }
+        return substr($string,1,strlen($string)-1);
+    }
 }

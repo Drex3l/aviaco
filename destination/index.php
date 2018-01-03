@@ -25,10 +25,10 @@ switch ($action) {
         if ($page == NULL || $page == FALSE) {
             $page = 1;
         }
-        $pages = Country::get_cities_page_count($country_limit,$country_code);
+        $pages = Country::get_cities_page_count($country_limit, $country_code);
         $country_name = Country::get_name($country_code);
         $countries = Country::get_names();
-        $cities = City::get_by_country($country_code,$country_limit,$page-1);
+        $cities = City::get_by_country($country_code, $country_limit, $page - 1);
         //------------------------------------------------------city information
         $city_id = intval(filter_input(INPUT_GET, 'city_id', FILTER_SANITIZE_STRING));
         if ($city_id == NULL || $city_id == FALSE) {
@@ -40,7 +40,7 @@ switch ($action) {
         break;
     case 'new_charter':
         $title = 'New Charter';
-         $page = intval(filter_input(INPUT_GET, 'page'));
+        $page = intval(filter_input(INPUT_GET, 'page'));
         if ($page == NULL || $page == FALSE) {
             $page = 1;
         }
@@ -63,22 +63,40 @@ switch ($action) {
         require_once dirname(__FILE__, 1) . ('/view/charter_add.php');
         break;
     case 'add_charter':
+        $error = array();
         $country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
+
+        $aircraft = filter_input(INPUT_POST, 'aircraft', FILTER_SANITIZE_STRING);
+        $airport = intval(filter_input(INPUT_POST, 'airport'));
+        $date = filter_input(INPUT_POST, 'date');
+        $distance = intval(filter_input(INPUT_POST, 'distance'));
+        $fuel = floatval(filter_input(INPUT_POST, 'fuel'));
+        $oil = floatval(filter_input(INPUT_POST, 'oil'));
+        $flight = floatval(filter_input(INPUT_POST, 'fly_hours'));
+        $wait = floatval(filter_input(INPUT_POST, 'wait_hours'));
+        $pilot = intval(filter_input(INPUT_POST, 'pilot'));
+        $copilot = intval(filter_input(INPUT_POST, 'co_pilot'));
+        $customer = intval(filter_input(INPUT_POST, 'customer'));
+        //Validate Input
+        if(empty($distance)){ $error['Distance'] = 'Distance field left empty';}
+        if($pilot == $copilot){ $error['Pilot'] = 'Pilot Overworked';}
+        if (count($error) != 0) {
+            require_once dirname(__FILE__, 2) . ('/root/view/error/error.php');
+        } else {
+            Charter::add_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer);
+            header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
+        }
+
+        break;
+    case 'dml_charter':
+        $country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
+        $city_id = intval(filter_input(INPUT_POST, 'city_id'));
         
-        $aircraft = filter_input(INPUT_POST,'aircraft',FILTER_SANITIZE_STRING);
-        $airport = intval(filter_input(INPUT_POST,'airport'));
-        $date = filter_input(INPUT_POST,'date');
-        $distance = intval(filter_input(INPUT_POST,'distance'));
-        $fuel = floatval(filter_input(INPUT_POST,'fuel'));
-        $oil = floatval(filter_input(INPUT_POST,'oil'));
-        $flight = floatval(filter_input(INPUT_POST,'fly_hours'));
-        $wait = floatval(filter_input(INPUT_POST,'wait_hours'));
-        $pilot = intval(filter_input(INPUT_POST,'pilot'));
-        $copilot = intval(filter_input(INPUT_POST,'co_pilot'));
-        $customer = intval(filter_input(INPUT_POST,'customer'));
-        
-        Charter::add_record("$aircraft",$airport,"$date",$distance,$fuel,$oil,$flight,$wait,$pilot,$copilot,$customer);
-        header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
+        if(isset($_POST['delete'])){ 
+            Charter::delete_record($_POST['id']);
+            header("location: ?action=destionations&country_code=$country_code&city_id=$city_id");
+            }
+        if(isset($_POST['update'])){            echo $_POST['id'].' to-date!';}
         break;
     case 'view_aircraft':
         $title = 'Service Schedule';

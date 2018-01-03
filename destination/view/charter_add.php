@@ -23,19 +23,19 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         <select name="airport">
             <?php            foreach ($cities as $city){
                 if(is_array($city)){?>
-            <option value=<?= $city['ID'];?>><?= $city['Name'];?></option>
+            <option value=<?= $city['ID'];?> <?php if($city_id == $city['ID']){echo 'selected';} ?>><?= $city['Name'];?></option>
                 <?php } else {?>
-                    <option value=<?= $cities['ID'];?>><?= $cities['Name'];?></option>
+            <option value=<?= $cities['ID'];?> <?php if($city_id == $cities['ID']){echo 'selected';} ?>><?= $cities['Name'];?></option>
                 <?php }
             }?>
         </select>
         <br/>
-        <label>Charter Date:</label><input type="date" name="date" required min="<?= date('Y-m-d');?>"/><br/>
-        <label>Charter Distance:</label><input type="number" name="distance" required min="1" /><br/>
-        <label>Fuel Amount Used:</label><input type="number" step="0.01" name="fuel" required min=".5"/><br/>
-        <label>Oil Amount used:</label><input type="number" name="oil" required step=".01" min=".5"/><br/>
-        <label>Flying Hours:</label><input type="number" name="fly_hours" required min=".25" step=".05"/><br/>
-        <label>Waiting hours:</label><input type="number" name="wait_hours" required min="0" step=".05"/><br/>
+        <label>Charter Date:</label><input type="date" name="date" required min="<?= date('Y-m-d');?>"/><label class="err" id="date">error</label><br/>
+        <label>Charter Distance:</label><input type="number" name="distance" required min="1" /><label class="err" id="distance">error</label><br/>
+        <label>Fuel Amount Used:</label><input type="number" step="0.01" name="fuel" required min=".5"/><label class="err" id="fuel">error</label><br/>
+        <label>Oil Amount used:</label><input type="number" name="oil" required step=".01" min=".5"/><label class="err" id="oil">error</label><br/>
+        <label>Flying Hours:</label><input type="number" name="fly_hours" required min=".25" step=".05"/><label class="err" id="fly_hours">error</label><br/>
+        <label>Waiting hours:</label><input type="number" name="wait_hours" required min="0" step=".05"/><label class="err" id="wait_hours">error</label><br/>
         <label>Select  Pilot:</label>
         <select name="pilot">
             <?php foreach ($pilots as $pilot){
@@ -57,7 +57,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
                 <?php }
             }?>
         </select>
-        <br/>
+        <label class="err" id="copilot">error</label><br/>
         <label>Select  Customer:</label>
         <select name="customer">
             <?php foreach ($customers as $customer){

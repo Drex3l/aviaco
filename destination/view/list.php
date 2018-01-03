@@ -1,13 +1,7 @@
 <?php
 require_once dirname(__FILE__,3).'/root/view/face/header.php';
+require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
 ?>
-<noscript>
-<div class="no_script">
-    <h1 >Your browser is not JavaScript enabled!</h1>
-    <p>You're seeing this message because this page contains JavaScript content, and can only be displayed once enabled.<br/><br/>
-        This feature can be enabled from the browser settings, as almost all modern now support JavaScript</p>
-</div>
-</noscript>
 <main class="js">
     <h1>Flight Destinations</h1>
     <aside>
@@ -91,6 +85,7 @@ require_once dirname(__FILE__,3).'/root/view/face/header.php';
                 <th>Aircraft</th>
                 <th>Customer</th>
                 <th>Pilot</th>
+                <th>Control</th>
             </tr>
             <?php
             foreach ($destinations as $record){
@@ -100,11 +95,27 @@ require_once dirname(__FILE__,3).'/root/view/face/header.php';
                     echo '<td><a href="?action=view_aircraft&ac_no='.$record['AIRCRAFT'].'">'.$record['AIRCRAFT'].'</a></td>';
                     echo '<td>'.$record['CUSTOMER'].'</td>';
                     echo '<td><a href="?action=view_pilot&emp_no='.$record['EMP_NUM'].'">'.$record['PILOT'].'</a></td>';
+                    echo '<td class="button"><form action="." method="post">
+                    <input type="hidden" name="action" value="dml_charter">
+                    <input type="hidden" name="id" value="'.$record['ID'].'">
+                    <input type="hidden" name="country_code" value="'.$country_code.'">
+                    <input type="hidden" name="city_id" value='.$city_id.'>
+                    <input type="submit" value="delete" name="delete">
+                    <input type="submit" value="update" name="update">
+                </form></td>';
                 } else {
                     echo '<td>'.$destinations['DATE'].'</td>';
                     echo '<td><a href="?action=view_aircraft&ac_no='.$destinations['AIRCRAFT'].'">'.$destinations['AIRCRAFT'].'</a></td>';
                     echo '<td>'.$destinations['CUSTOMER'].'</td>';
                     echo '<td><a href="?action=view_pilot&emp_no='.$destinations['EMP_NUM'].'">'.$destinations['PILOT'].'</a></td>';
+                    echo '<td class="button"><form action="." method="post">
+                    <input type="hidden" name="action" value="dml_charter">
+                    <input type="hidden" name="id" value="'.$destinations['ID'].'">
+                    <input type="hidden" name="country_code" value="'.$country_code.'">
+                    <input type="hidden" name="city_id" value='.$city_id.'>
+                    <input type="submit" value="delete" name="delete">
+                    <input type="submit" value="update" name="update">
+                </form></td>';
                     break;
                 }
                 echo '</tr>';

@@ -5,6 +5,7 @@
     </p>
 </footer>
 <script type="text/javascript" language="JavaScript" src="<?= PATH; ?>/root/usr/js/destination.js"></script>
-<script type="text/javascript" language="JavaScript" src="<?= PATH; ?>/root/usr/js/root.js"></script>
+<script type="text/javascript" language="JavaScript" src="<?= PATH; ?>/root/usr/js/string.js"></script>
+<script type="text/javascript" language="JavaScript" src="<?= PATH; ?>/root/usr/js/component.js"></script>
 </body>
 </html>

@@ -29,7 +29,7 @@ abstract class dbHandler {
             try {
                 self::$conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PASS);
             } catch (PDOException $ex) {
-                self::db_error($ex->getMessage());
+                self::db_error($ex->getMessage(),'connect','connection error');
             }
         }
         return self::$conn;
@@ -50,8 +50,13 @@ abstract class dbHandler {
             $pdo_conn = self::GetConnection();  //------------------------------ get connection
             $statement = $pdo_conn->prepare($sql);  //-------------------------- prepare query for execution
             $statement->execute($params);   //---------------------------------- execute query
+            
+            if ($statement->rowCount() === 1) {
+                $error = $statement->fetch();
+                IF(count($error) == 3){throw new PDOException($error['POINT'].';'.$error['CODE'].';'.$error['DESCRIPTION']);}
+            }
         } catch (PDOException $ex) {
-            self::db_error($ex->getMessage());
+            self::db_error($ex->getMessage(),'DML','script error');
         }
     }
 
@@ -75,14 +80,14 @@ abstract class dbHandler {
         return $query;
     }
 
-    private static function db_error($msg) {
+    private static function db_error($msg,$case='',$title='DB Error') {
         self::Close();
         $contents = ob_get_contents();
         ob_clean();
         $error_message = $msg;
         $error = Debug::ExceptionLog($msg);
         require_once dirname(__FILE__, 3) . '/view/error/db.php';
-        echo '<script> document.title = "Connection Error"; </script>';
+        echo "<script> document.title = '$title'; </script>";
         exit();
     }
 

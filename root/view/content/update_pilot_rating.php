@@ -1,5 +1,7 @@
-<?php require_once dirname(__FILE__,3). '/view/face/header.php'; ?>
-<main>
+<?php require_once dirname(__FILE__,3). '/view/face/header.php'; 
+ require_once dirname(__FILE__,3).'/view/face/noscript.php';
+?>
+<main class="js">
     <h1>Pilot Select</h1>
     <aside>
         <!-- display a list of departments -->
@@ -24,12 +26,12 @@
         <input type="hidden" name="action" value="rate_list"/>
         <ul>
         <?php foreach ($ratings as $rating) : ?>
-            <li><label><input type="checkbox" name="rating[]" value="<?= $rating['RTG_CODE']; ?> " <?php if(Rating::check($pilot_data['ID'],$rating['RTG_CODE'])){?>checked<?php }?> /><?= $rating['RTG_CODE']; ?></label>
+            <li><label><input onchange="checkboxStatus('<?= Rating::get_rating_string($emp_num);?>','rating[]',submit)" type="checkbox" name="rating[]" value="<?= $rating['RTG_CODE']; ?>" <?php if(Rating::check($pilot_data['ID'],$rating['RTG_CODE'])){?>checked<?php }?> /><?= $rating['RTG_CODE']; ?></label>
             </li>
         <?php endforeach; ?>
         </ul>
         <input type="hidden" name="pilot" value="<?= $pilot_data['ID']; ?>"/>
-        <input type="submit" value="save changes"/><br/><br/>
+        <input type="submit" value="save changes" id="submit" disabled /><br/><br/>
         </form>
         </nav>
     </aside>
