@@ -91,15 +91,12 @@ switch ($action) {
             require_once dirname(__FILE__, 2) . ('/root/view/error/error.php');
         } else {
             switch ($DML) {
-                case 'insert':
+                case 'Add':
                     Charter::add_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer);
                     header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
                     break;
-                case 'update':
+                case 'Update':
                     echo 'up2date';
-                    break;
-                case 'delete':
-
                     break;
                 default :
                     echo "case not handled for action '<strong>$DML</strong>'";

@@ -5,7 +5,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
     <h1>New Charter</h1>
     <h2 class="right selected"><?= $country_name; ?></h2>
     <form name="charter_record" action="." method="post" id="charter_record" class="aligned">
-        <input type="hidden" name="instruction" value="insert">
+        <input type="hidden" name="instruction" value="<?= $command;?>">
         <input type="hidden" name="orig_aircraft" value="<?= $charter['AC_NUMBER']; ?>" />
         <input type="hidden" name="orig_airport" value="<?= $charter['AIRPORT_CODE']; ?>" />
         <input type="hidden" name="orig_date" value="<?= $charter['CHAR_DATE']; ?>" />
