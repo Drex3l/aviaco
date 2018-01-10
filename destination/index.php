@@ -38,8 +38,9 @@ switch ($action) {
         $destinations = Charter::get_records($city_id);
         require_once dirname(__FILE__, 1) . ('/view/list.php');
         break;
-    case 'new_charter':
+    case 'charter_insert':
         $title = 'New Charter';
+        $command = 'Add';
         $page = intval(filter_input(INPUT_GET, 'page'));
         if ($page == NULL || $page == FALSE) {
             $page = 1;
@@ -60,10 +61,11 @@ switch ($action) {
         //---------------------------------------------------------------Members
         $pilots = Pilot::get_pilots();
         $customers = Customer::get_customers();
-        require_once dirname(__FILE__, 1) . ('/view/charter_add.php');
+        require_once dirname(__FILE__, 1) . ('/view/charter_details.php');
         break;
-    case 'add_charter':
+    case 'charter_record':
         $error = array();
+        $DML = filter_input(INPUT_POST, 'instruction');
         $country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
 
         $aircraft = filter_input(INPUT_POST, 'aircraft', FILTER_SANITIZE_STRING);
@@ -78,25 +80,57 @@ switch ($action) {
         $copilot = intval(filter_input(INPUT_POST, 'co_pilot'));
         $customer = intval(filter_input(INPUT_POST, 'customer'));
         //Validate Input
-        if(empty($distance)){ $error['Distance'] = 'Distance field left empty';}
-        if($pilot == $copilot){ $error['Pilot'] = 'Pilot Overworked';}
+        if (empty($distance)) {
+            $error['Distance'] = 'Distance field left empty';
+        }
+        if ($pilot == $copilot) {
+            $error['Pilot'] = "Pilot <b>'" . Pilot::get_pilot_name($pilot) . "'</b> Overworked";
+        }
         if (count($error) != 0) {
+            $title = 'Charter Error';
             require_once dirname(__FILE__, 2) . ('/root/view/error/error.php');
         } else {
-            Charter::add_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer);
-            header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
+            switch ($DML) {
+                case 'insert':
+                    Charter::add_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer);
+                    header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
+                    break;
+                case 'update':
+                    echo 'up2date';
+                    break;
+                case 'delete':
+
+                    break;
+                default :
+                    echo "case not handled for action '<strong>$DML</strong>'";
+                    break;
+            }
         }
 
         break;
     case 'dml_charter':
         $country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
         $city_id = intval(filter_input(INPUT_POST, 'city_id'));
-        
-        if(isset($_POST['delete'])){ 
+        $id = filter_input(INPUT_POST, 'id');
+
+        if (isset($_POST['delete'])) {
             Charter::delete_record($_POST['id']);
             header("location: ?action=destionations&country_code=$country_code&city_id=$city_id");
-            }
-        if(isset($_POST['update'])){            echo $_POST['id'].' to-date!';}
+        }
+        if (isset($_POST['update'])) {
+            $title = 'Charter Info';
+            $command = 'Update';
+            $country_name = Country::get_name($country_code);
+            $page = intval(filter_input(INPUT_POST, 'page'));
+
+            $aircraft = Aircraft::get_aircraft_no();
+            $cities = City::get_by_country($country_code);
+            $pilots = Pilot::get_pilots();
+            $customers = Customer::get_customers();
+            $charter = Charter::get_charter($id);
+
+            require_once dirname(__FILE__, 1) . ('/view/charter_details.php');
+        }
         break;
     case 'view_aircraft':
         $title = 'Service Schedule';

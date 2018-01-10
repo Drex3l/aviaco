@@ -81,11 +81,11 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
         <h2 class="right selected"><?= $city['Name'].', '.$city['District']; ?></h2>
         <table class="fancy" style="width: 100%">
             <tr>
-                <th>Charter Date</th>
+                <th>Date</th>
                 <th>Aircraft</th>
                 <th>Customer</th>
                 <th>Pilot</th>
-                <th>Control</th>
+                <th class="control"></th>
             </tr>
             <?php
             foreach ($destinations as $record){
@@ -95,10 +95,12 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
                     echo '<td><a href="?action=view_aircraft&ac_no='.$record['AIRCRAFT'].'">'.$record['AIRCRAFT'].'</a></td>';
                     echo '<td>'.$record['CUSTOMER'].'</td>';
                     echo '<td><a href="?action=view_pilot&emp_no='.$record['EMP_NUM'].'">'.$record['PILOT'].'</a></td>';
-                    echo '<td class="button"><form action="." method="post">
+                    echo '<td class="button control"><form action="." method="post">
                     <input type="hidden" name="action" value="dml_charter">
+                    <input type="hidden" name="instruction" value="update">
                     <input type="hidden" name="id" value="'.$record['ID'].'">
                     <input type="hidden" name="country_code" value="'.$country_code.'">
+                    <input type="hidden" name="page" value='.$page.'>
                     <input type="hidden" name="city_id" value='.$city_id.'>
                     <input type="submit" value="delete" name="delete">
                     <input type="submit" value="update" name="update">
@@ -108,10 +110,12 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
                     echo '<td><a href="?action=view_aircraft&ac_no='.$destinations['AIRCRAFT'].'">'.$destinations['AIRCRAFT'].'</a></td>';
                     echo '<td>'.$destinations['CUSTOMER'].'</td>';
                     echo '<td><a href="?action=view_pilot&emp_no='.$destinations['EMP_NUM'].'">'.$destinations['PILOT'].'</a></td>';
-                    echo '<td class="button"><form action="." method="post">
+                    echo '<td class="button control"><form action="." method="post">
                     <input type="hidden" name="action" value="dml_charter">
+                    <input type="hidden" name="country_code" value="update">
                     <input type="hidden" name="id" value="'.$destinations['ID'].'">
                     <input type="hidden" name="country_code" value="'.$country_code.'">
+                    <input type="hidden" name="page" value='.$page.'>
                     <input type="hidden" name="city_id" value='.$city_id.'>
                     <input type="submit" value="delete" name="delete">
                     <input type="submit" value="update" name="update">
@@ -123,7 +127,7 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
             ?>
         </table>
         <p class="last_paragraph">
-            <a id="charter-add" href="?action=new_charter&country_code=<?= $country_code;?>&city_id=<?= $city_id;?>&page=<?=$page;?>">Add New Charter</a>
+            <a id="charter-add" href="?action=charter_insert&country_code=<?= $country_code;?>&city_id=<?= $city_id;?>&page=<?=$page;?>">Add New Charter</a>
         </p>
     </section>
     <br/>

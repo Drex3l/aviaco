@@ -12,6 +12,13 @@ abstract class Charter {
     public static function delete_record($id){
         dbHandler::Execute('DELETE FROM charter WHERE CHAR_TRIP = :id', array(':id'=>$id));
     }
+    public static function update_record(){
+        
+    }
+
+    public static function get_charter($id){
+        return dbHandler::DQL('SELECT c.*,l.PILOT, l.COPILOT FROM charter c, charter_list l WHERE ID = CHAR_TRIP && CHAR_TRIP = :id', array(':id'=>$id));
+    }
 }
 
 abstract class Country{
@@ -48,6 +55,10 @@ abstract class Pilot {
     public static function get_pilot_info($id){
         return dbHandler::DQL('CALL sp_getPilotInfo(:emp)', array(':emp' => $id));
     }
+    public static function get_pilot_name($id){
+        return dbHandler::DQL("SELECT CONCAT(EMP_FNAME,' ',EMP_LNAME) PILOT FROM employee WHERE EMP_NUM = :id", array(':id'=>$id))['PILOT'];
+    }
+
     public static function get_pilots(){
         return dbHandler::DQL('call sp_getMembers("P")');
     }

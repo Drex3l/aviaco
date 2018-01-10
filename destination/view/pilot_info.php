@@ -7,13 +7,13 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
     <h2 class="right selected"><?= $pilot['PILOT']; ?></h2>
     <form name="pilot_view" action="." method="" id="pilot_view" class="aligned">
         <label>Total number of flights:</label>
-        <input type="text" name="num_flights" readonly size="4" value="<?= $pilot['FLIGHTS'];?>"/>
+        <input type="text" name="num_flights" readonly size="4" value="<?= htmlspecialchars($pilot['FLIGHTS']);?>"/>
         <br/>
         <label>Total number of hours flown:</label>
-        <input type="text" name="flight_hours" readonly size="4" value="<?= $pilot['HOURS'];?>"/>
+        <input type="text" name="flight_hours" readonly size="4" value="<?= htmlspecialchars(explode('.',$pilot['HOURS'])[0]);?>"/>
         <br/>
         <label>All pilot ratings:</label>
-        <input type="text" name="pil_ratings" readonly value="<?= $pilot['RATINGS'];?>"/>
+        <input type="text" name="pil_ratings" readonly value="<?= htmlspecialchars($pilot['RATINGS']);?>"/>
         <br/>
     </form>
     <p class="">

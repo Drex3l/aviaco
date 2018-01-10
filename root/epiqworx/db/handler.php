@@ -53,7 +53,7 @@ abstract class dbHandler {
             
             if ($statement->rowCount() === 1) {
                 $error = $statement->fetch();
-                IF(count($error) == 3){throw new PDOException($error['POINT'].';'.$error['CODE'].';'.$error['DESCRIPTION']);}
+                if(count($error) == 3){throw new PDOException($error['POINT'].';'.$error['CODE'].';'.$error['DESCRIPTION']);}
             }
         } catch (PDOException $ex) {
             self::db_error($ex->getMessage(),'DML','script error');
