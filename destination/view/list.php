@@ -102,8 +102,8 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
                     <input type="hidden" name="country_code" value="'.$country_code.'">
                     <input type="hidden" name="page" value='.$page.'>
                     <input type="hidden" name="city_id" value='.$city_id.'>
-                    <input type="submit" value="delete" name="delete">
                     <input type="submit" value="update" name="update">
+                    <input type="submit" value="delete" name="delete">
                 </form></td>';
                 } else {
                     echo '<td>'.$destinations['DATE'].'</td>';
@@ -117,8 +117,8 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
                     <input type="hidden" name="country_code" value="'.$country_code.'">
                     <input type="hidden" name="page" value='.$page.'>
                     <input type="hidden" name="city_id" value='.$city_id.'>
-                    <input type="submit" value="delete" name="delete">
                     <input type="submit" value="update" name="update">
+                    <input type="submit" value="delete" name="delete">
                 </form></td>';
                     break;
                 }

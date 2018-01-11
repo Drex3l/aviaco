@@ -127,8 +127,9 @@ SET character_set_client = utf8;
  1 AS `DATE`,
  1 AS `AIRCRAFT`,
  1 AS `CUSTOMER`,
- 1 AS `EMP_NUM`,
- 1 AS `AIRPORT_CODE`*/;
+ 1 AS `AIRPORT_CODE`,
+ 1 AS `PILOT`,
+ 1 AS `COPILOT`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -431,7 +432,7 @@ BEGIN
 	BEGIN 
 		GET DIAGNOSTICS CONDITION 1 @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
 		ROLLBACK;
-        	SELECT CONCAT('Error encountered, operation rollbacked. : C',LPAD(CHECKPOINT,2,'0'))  AS 'SQL EXCEPTION',@p1 AS CODE, @p2 AS DESCRIPTION;
+        	SELECT CONCAT('C',LPAD(CHECKPOINT,2,'0'))  AS 'POINT',@p1 AS CODE, @p2 AS DESCRIPTION;
 	END;
 	START TRANSACTION;
 		IF distance = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INVALID DISTANCE'; END IF;
@@ -439,7 +440,7 @@ BEGIN
 		INSERT INTO charter VALUES(\N,departure,plane,0,flyHours,waitHours,fuel,oil,passenger,airport);				SET CHECKPOINT = 1;
 		SET @charter = (SELECT CHAR_TRIP FROM charter WHERE CHAR_DISTANCE = 0);	SET CHECKPOINT = 2;
 		UPDATE charter SET CHAR_DISTANCE = distance WHERE CHAR_DISTANCE = 0;	SET CHECKPOINT = 3;
-		
+
                 SET @AC_TTAF = ((SELECT AC_TTAF FROM aircraft WHERE AC_NUMBER = plane) + flyHours); 
                 SET @AC_TTEL = ((SELECT AC_TTEL FROM aircraft WHERE AC_NUMBER = plane) + flyHours);
                 SET @AC_TTER = ((SELECT AC_TTER FROM aircraft WHERE AC_NUMBER = plane) + flyHours);
@@ -489,7 +490,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getCharters`(IN destination INT(11))
-SELECT DATE, AIRCRAFT, CUSTOMER, CONCAT(`EMP_FNAME`,' ',`EMP_LNAME`) PILOT, e.EMP_NUM FROM charter_list l, employee e WHERE l.EMP_NUM = e.EMP_NUM AND AIRPORT_CODE = destination
+SELECT DATE, AIRCRAFT, CUSTOMER, CONCAT(`EMP_FNAME`,' ',`EMP_LNAME`) PILOT, e.EMP_NUM, l.ID FROM charter_list l, employee e WHERE l.PILOT = e.EMP_NUM AND AIRPORT_CODE = destination
 ORDER BY DATE ASC ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -683,6 +684,53 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_updateCharter` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_updateCharter`(
+	IN plane VARCHAR(5),
+	IN airport INT(11),
+	IN departure DATE,
+	IN distance INT(4) UNSIGNED,
+	IN fuel FLOAT,
+	IN oil INT(1) UNSIGNED,
+	IN flyHours FLOAT,
+	IN waitHours FLOAT,
+	IN pil BIGINT UNSIGNED,
+	IN copilot BIGINT UNSIGNED,
+	IN passenger BIGINT UNSIGNED,
+	IN id BIGINT(20) UNSIGNED
+)
+BEGIN
+	DECLARE CHECKPOINT  TINYINT UNSIGNED DEFAULT 0;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION,1265
+	BEGIN 
+		GET DIAGNOSTICS CONDITION 1 @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+		ROLLBACK;
+        	SELECT CONCAT('C',LPAD(CHECKPOINT,2,'0'))  AS 'POINT',@p1 AS CODE, @p2 AS DESCRIPTION;
+	END;
+	START TRANSACTION;
+	
+	SET plane = UPPER(REPLACE(plane,' ',''));
+
+	UPDATE charter SET AC_NUMBER = plane, AIRPORT_CODE = airport, CHAR_DATE = departure, CHAR_DISTANCE = distance, CHAR_FUEL_GALLONS = fuel, CHAR_OIL_QTS = oil, CHAR_HOURS_FLOWN = flyHours, CHAR_HOURS_WAIT = waitHours, CUS_CODE = passenger WHERE  CHAR_TRIP = id;
+	UPDATE crew SET EMP_NUM = pil WHERE  CHAR_TRIP = id && CREW_JOB = 'Pilot';
+	UPDATE crew SET EMP_NUM = copilot WHERE  CHAR_TRIP = id && CREW_JOB = 'Copilot';
+	
+ 	COMMIT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Current Database: `aviaco`
@@ -703,7 +751,7 @@ USE `aviaco`;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `average_consumption` AS select `A`.`MOD_CODE` AS `MOD_CODE`,avg(`C`.`CHAR_FUEL_GALLONS`) AS `FUEL`,avg(`C`.`CHAR_OIL_QTS`) AS `OIL` from (`charter` `C` join `aircraft` `A`) where (`C`.`AC_NUMBER` = `A`.`AC_NUMBER`) group by `A`.`MOD_CODE` */;
+/*!50001 VIEW `average_consumption` AS select `A`.`MOD_CODE` AS `MOD_CODE`,round(avg(`C`.`CHAR_FUEL_GALLONS`),2) AS `FUEL`,round(avg(`C`.`CHAR_OIL_QTS`),2) AS `OIL` from (`charter` `C` join `aircraft` `A`) where (`C`.`AC_NUMBER` = `A`.`AC_NUMBER`) group by `A`.`MOD_CODE` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -721,7 +769,7 @@ USE `aviaco`;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `charter_list` AS select `ct`.`CHAR_TRIP` AS `ID`,`ct`.`CHAR_DATE` AS `DATE`,`ct`.`AC_NUMBER` AS `AIRCRAFT`,concat(`c`.`CUS_FNAME`,' ',`c`.`CUS_LNAME`) AS `CUSTOMER`,`e`.`EMP_NUM` AS `EMP_NUM`,`ct`.`AIRPORT_CODE` AS `AIRPORT_CODE` from ((((`charter` `ct` join `customer` `c`) join `crew` `cr`) join `employee` `e`) join `pilot` `p`) where ((`ct`.`CUS_CODE` = `c`.`CUS_CODE`) and (`ct`.`CHAR_TRIP` = `cr`.`CHAR_TRIP`) and (`cr`.`EMP_NUM` = `e`.`EMP_NUM`) and (`cr`.`CREW_JOB` = 'Pilot') and (`e`.`EMP_NUM` = `p`.`EMP_NUM`)) */;
+/*!50001 VIEW `charter_list` AS select `ct`.`CHAR_TRIP` AS `ID`,`ct`.`CHAR_DATE` AS `DATE`,`ct`.`AC_NUMBER` AS `AIRCRAFT`,concat(`c`.`CUS_FNAME`,' ',`c`.`CUS_LNAME`) AS `CUSTOMER`,`ct`.`AIRPORT_CODE` AS `AIRPORT_CODE`,(select `cr`.`EMP_NUM` from `crew` `cr` where ((`cr`.`CHAR_TRIP` = `ct`.`CHAR_TRIP`) and (`cr`.`CREW_JOB` = 'Pilot'))) AS `PILOT`,(select `cr`.`EMP_NUM` from `crew` `cr` where ((`cr`.`CHAR_TRIP` = `ct`.`CHAR_TRIP`) and (`cr`.`CREW_JOB` = 'Copilot'))) AS `COPILOT` from (`charter` `ct` join `customer` `c`) where (`c`.`CUS_CODE` = `ct`.`CUS_CODE`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -789,4 +837,4 @@ USE `aviaco`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-02  0:22:30
+-- Dump completed on 2018-01-11 14:39:17

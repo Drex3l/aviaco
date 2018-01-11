@@ -96,7 +96,9 @@ switch ($action) {
                     header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
                     break;
                 case 'Update':
-                    echo 'up2date';
+                    $id = intval(filter_input(INPUT_POST, 'id'));
+                    Charter::update_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer,$id);
+                    header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
                     break;
                 default :
                     echo "case not handled for action '<strong>$DML</strong>'";

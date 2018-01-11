@@ -12,8 +12,9 @@ abstract class Charter {
     public static function delete_record($id){
         dbHandler::Execute('DELETE FROM charter WHERE CHAR_TRIP = :id', array(':id'=>$id));
     }
-    public static function update_record(){
-        
+    public static function update_record($plane,$city,$date,$distance,$fuel,$oil,$flyhours,$waitHours,$pilot,$copilot,$customer,$id){
+        $param = array(':plane'=>$plane,':city'=>$city,':date'=>$date,':distance'=>$distance,':fuel'=>$fuel,':oil'=>$oil,':flyHours'=>$flyhours,':waitHours'=>$waitHours,':pilot'=>$pilot,':copilot'=>$copilot,':customer'=>$customer,':id'=>$id);
+        dbHandler::Execute('call sp_updateCharter(:plane,:city,:date,:distance,:fuel,:oil,:flyHours,:waitHours,:pilot,:copilot,:customer,:id)',$param);
     }
 
     public static function get_charter($id){

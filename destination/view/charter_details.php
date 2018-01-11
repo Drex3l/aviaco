@@ -6,6 +6,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
     <h2 class="right selected"><?= $country_name; ?></h2>
     <form name="charter_record" action="." method="post" id="charter_record" class="aligned">
         <input type="hidden" name="instruction" value="<?= $command;?>">
+        <?php if(isset($id)){?><input type="hidden" name="id" value=<?= $id;?> /><?php }?>
         <input type="hidden" name="orig_aircraft" value="<?= $charter['AC_NUMBER']; ?>" />
         <input type="hidden" name="orig_airport" value="<?= $charter['AIRPORT_CODE']; ?>" />
         <input type="hidden" name="orig_date" value="<?= $charter['CHAR_DATE']; ?>" />
