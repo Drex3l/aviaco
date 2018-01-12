@@ -142,7 +142,12 @@ function chaterDetails() {
     //------------------------------------------------------------------Co-Pilot
     if (document.getElementsByName("orig_co_pilot")[0].value !== cmbCopilot.value)
     {
-        submit.disabled = false;
+        if(cmbCopilot.value === cmbPilot.value)
+        {
+            err++;
+            document.getElementById('copilot_err').innerHTML = "Already assigned as Pilot";
+        }
+        else submit.disabled = false;
     }
     //------------------------------------------------------------------Customer
     if (document.getElementsByName("orig_customer")[0].value !== cmbCustomer.value)

@@ -67,6 +67,7 @@ switch ($action) {
         $error = array();
         $DML = filter_input(INPUT_POST, 'instruction');
         $country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
+        $page = intval(filter_input(INPUT_POST, 'page'));
 
         $aircraft = filter_input(INPUT_POST, 'aircraft', FILTER_SANITIZE_STRING);
         $airport = intval(filter_input(INPUT_POST, 'airport'));
@@ -93,12 +94,12 @@ switch ($action) {
             switch ($DML) {
                 case 'Add':
                     Charter::add_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer);
-                    header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
+                    header("location: ?action=destionations&country_code=$country_code&city_id=$airport&page=$page");
                     break;
                 case 'Update':
                     $id = intval(filter_input(INPUT_POST, 'id'));
                     Charter::update_record("$aircraft", $airport, "$date", $distance, $fuel, $oil, $flight, $wait, $pilot, $copilot, $customer,$id);
-                    header("location: ?action=destionations&country_code=$country_code&city_id=$airport");
+                    header("location: ?action=destionations&country_code=$country_code&city_id=$airport&page=$page");
                     break;
                 default :
                     echo "case not handled for action '<strong>$DML</strong>'";

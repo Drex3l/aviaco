@@ -22,6 +22,7 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
 
         <input type="hidden" name="action" value="charter_record"/>
         <input type="hidden" name="country_code" value="<?= $country_code; ?>"/>
+        <input type="hidden" name="page" value="<?= $page; ?>"/>
 
         <label>Select  Aircraft:</label>
         <select name="aircraft" id="aircraft" onchange="chaterDetails()">
@@ -69,7 +70,7 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
         <label>Charter Date:</label><input type="date" id="date" name="date" onchange="chaterDetails()" required min="<?= date('Y-m-d'); ?>" value="<?= htmlspecialchars($charter['CHAR_DATE']); ?>"/><label class="err chtErr" id="date_err">error</label><br/>
         <label>Charter Distance:</label><input type="number" id="distance" name="distance" onchange="chaterDetails()" required min="1" value="<?php if(isset($charter)){ echo htmlspecialchars($charter['CHAR_DISTANCE']);} ?>" /><label class="err chtErr" id="distance_err">error</label><br/>
         <label>Fuel Amount Used:</label><input type="number" id="fuel" step="0.01" name="fuel" onchange="chaterDetails()" required min=".5" value="<?= htmlspecialchars($charter['CHAR_FUEL_GALLONS']); ?>" /><label class="err chtErr" id="fuel_err">error</label><br/>
-        <label>Oil Amount used:</label><input type="number" id="oil" name="oil" onchange="chaterDetails()" required step=".01" min=".5" value="<?= htmlspecialchars($charter['CHAR_OIL_QTS']); ?>"/><label class="err" id="oil_err">error</label><br/>
+        <label>Oil Amount used:</label><input type="number" id="oil" name="oil" onchange="chaterDetails()" required step=".01" min=".5" value="<?= htmlspecialchars($charter['CHAR_OIL_QTS']); ?>"/><label class="err chtErr" id="oil_err">error</label><br/>
         <label>Flying Hours:</label><input type="number" id="fly_hours" name="fly_hours" onchange="chaterDetails()" required min=".25" step=".05" value="<?= htmlspecialchars($charter['CHAR_HOURS_FLOWN']); ?>"/><label class="err chtErr" id="fly_err">error</label><br/>
         <label>Waiting hours:</label><input type="number" id="wait_hours" name="wait_hours" onchange="chaterDetails()" required min="0" step=".05" value="<?= htmlspecialchars($charter['CHAR_HOURS_WAIT']); ?>"/><label class="err chtErr" id="wait_err">error</label><br/>
         <label>Select  Pilot:</label>
