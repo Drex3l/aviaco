@@ -26,6 +26,9 @@ ul,li,.pagination {margin: 0;padding: 0;}
 nav ul {list-style-type: none;margin-left: 0;padding-left: 0;}
 nav ul li {padding-bottom: 0.5em;}
 
+#cityList span.count{margin-left: .2em;color: #000;vertical-align: top;font-size: 10pt}
+#cityList a.selected span.count{background-color: #444;color: #fff;border-bottom: 3px solid #444}
+
 a {color:#566; font-weight: 100; text-decoration: none;}
 a:visited { font-weight:100; }
 a:active { color: rgb(192,0,0); }

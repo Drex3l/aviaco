@@ -17,14 +17,20 @@ require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
             <ul id="cityList">
                 <?php                foreach ($cities as $destination){
                     echo '<li>';
-                if(is_array($destination)){?>
+                if(is_array($destination)){
+                    $charter_count = Charter::count_by_city($destination['ID']);
+                    if($charter_count < 1){ $charter_count = "";}
+                    ?>
                     <a href="?action=destionations&city_id=<?= $destination['ID'];?>&country_code=<?= $country_code;?>&page=<?=$page;?>" <?php if($destination['ID'] == $city_id){ echo 'class="selected"';} ?>>
-                        <?= $destination['Name'];?>
+                        <?= $destination['Name'];?><span class="count">&nbsp;<?= $charter_count;?>&nbsp;</span>
                     </a>
-                <?php }else{ ?>
+                <?php }else{ 
+                     $charter_count = Charter::count_by_city($cities['ID']);
+                    if($charter_count < 1){ $charter_count = "";}
+                    ?>
                 <a href="?action=destionations&city_id=<?= $cities['ID'];?>&country_code=<?= $country_code;?>&page=<?=$page;?>" <?php if($cities['ID'] == $city_id){ echo 'class="selected"';} ?>>
-                        <?= $cities['Name'];?>
-                    </a>
+                        <?= $cities['Name'];?><span class="count">&nbsp;<?= $charter_count;?>&nbsp;</span>
+                </a>
                 <?php 
         break;
                 }

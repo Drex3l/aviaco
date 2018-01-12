@@ -20,6 +20,9 @@ abstract class Charter {
     public static function get_charter($id){
         return dbHandler::DQL('SELECT c.*,l.PILOT, l.COPILOT FROM charter c, charter_list l WHERE ID = CHAR_TRIP && CHAR_TRIP = :id', array(':id'=>$id));
     }
+    public static function count_by_city($id){
+        return dbHandler::DQL(' SELECT COUNT(CHAR_TRIP) RECORDS FROM charter WHERE AIRPORT_CODE = :id', array(':id'=>$id))['RECORDS'];
+    }
 }
 
 abstract class Country{
