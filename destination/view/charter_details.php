@@ -1,8 +1,9 @@
 <?php
 require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
+require_once dirname(__FILE__,3).'/root/view/face/noscript.php';
 ?>
-<main>
-    <h1>New Charter</h1>
+<main class="js">
+    <h1>Charter Details</h1>
     <h2 class="right selected"><?= $country_name; ?></h2>
     <form name="charter_record" action="." method="post" id="charter_record" class="aligned">
         <input type="hidden" name="instruction" value="<?= $command;?>">
@@ -12,7 +13,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         <input type="hidden" name="orig_date" value="<?= $charter['CHAR_DATE']; ?>" />
         <input type="hidden" name="orig_distance" value="<?= $charter['CHAR_DISTANCE']; ?>" />
         <input type="hidden" name="orig_fuel" value="<?= $charter['CHAR_FUEL_GALLONS']; ?>" />
-        <input type="hidden" name="orig_oil" value="<?= $charter['CHAR_OIL_QTS']; ?>" /><br/>
+        <input type="hidden" name="orig_oil" value="<?= $charter['CHAR_OIL_QTS']; ?>" />
         <input type="hidden" name="orig_fly_hours" value="<?= $charter['CHAR_HOURS_FLOWN']; ?>" />
         <input type="hidden" name="orig_wait_hours" value="<?= $charter['CHAR_HOURS_WAIT']; ?>" />
         <input type="hidden" name="orig_pilot" value="<?= $charter['PILOT']; ?>" />
@@ -23,7 +24,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         <input type="hidden" name="country_code" value="<?= $country_code; ?>"/>
 
         <label>Select  Aircraft:</label>
-        <select name="aircraft">
+        <select name="aircraft" id="aircraft" onchange="chaterDetails()">
             <?php
             foreach ($aircraft as $ac) {
                 if (is_array($ac)) {
@@ -43,7 +44,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         </select>
         <br/>
         <label>Select Destination:</label>
-        <select name="airport">
+        <select name="airport" id="airport" onchange="chaterDetails()">
             <?php
             foreach ($cities as $city) {
                 if (is_array($city)) {
@@ -65,14 +66,14 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
 ?>
         </select>
         <br/>
-        <label>Charter Date:</label><input type="date" name="date" required min="<?= date('Y-m-d'); ?>" value="<?= htmlspecialchars($charter['CHAR_DATE']); ?>"/><label class="err" id="date">error</label><br/>
-        <label>Charter Distance:</label><input type="number" name="distance" required min="1" value="<?= htmlspecialchars($charter['CHAR_DISTANCE']); ?>" /><label class="err" id="distance">error</label><br/>
-        <label>Fuel Amount Used:</label><input type="number" step="0.01" name="fuel" required min=".5" value="<?= htmlspecialchars($charter['CHAR_FUEL_GALLONS']); ?>" /><label class="err" id="fuel">error</label><br/>
-        <label>Oil Amount used:</label><input type="number" name="oil" required step=".01" min=".5" value="<?= htmlspecialchars($charter['CHAR_OIL_QTS']); ?>"/><label class="err" id="oil">error</label><br/>
-        <label>Flying Hours:</label><input type="number" name="fly_hours" required min=".25" step=".05" value="<?= htmlspecialchars($charter['CHAR_HOURS_FLOWN']); ?>"/><label class="err" id="fly_hours">error</label><br/>
-        <label>Waiting hours:</label><input type="number" name="wait_hours" required min="0" step=".05" value="<?= htmlspecialchars($charter['CHAR_HOURS_WAIT']); ?>"/><label class="err" id="wait_hours">error</label><br/>
+        <label>Charter Date:</label><input type="date" id="date" name="date" onchange="chaterDetails()" required min="<?= date('Y-m-d'); ?>" value="<?= htmlspecialchars($charter['CHAR_DATE']); ?>"/><label class="err chtErr" id="date_err">error</label><br/>
+        <label>Charter Distance:</label><input type="number" id="distance" name="distance" onchange="chaterDetails()" required min="1" value="<?php if(isset($charter)){ echo htmlspecialchars($charter['CHAR_DISTANCE']);} ?>" /><label class="err chtErr" id="distance_err">error</label><br/>
+        <label>Fuel Amount Used:</label><input type="number" id="fuel" step="0.01" name="fuel" onchange="chaterDetails()" required min=".5" value="<?= htmlspecialchars($charter['CHAR_FUEL_GALLONS']); ?>" /><label class="err chtErr" id="fuel_err">error</label><br/>
+        <label>Oil Amount used:</label><input type="number" id="oil" name="oil" onchange="chaterDetails()" required step=".01" min=".5" value="<?= htmlspecialchars($charter['CHAR_OIL_QTS']); ?>"/><label class="err" id="oil_err">error</label><br/>
+        <label>Flying Hours:</label><input type="number" id="fly_hours" name="fly_hours" onchange="chaterDetails()" required min=".25" step=".05" value="<?= htmlspecialchars($charter['CHAR_HOURS_FLOWN']); ?>"/><label class="err chtErr" id="fly_err">error</label><br/>
+        <label>Waiting hours:</label><input type="number" id="wait_hours" name="wait_hours" onchange="chaterDetails()" required min="0" step=".05" value="<?= htmlspecialchars($charter['CHAR_HOURS_WAIT']); ?>"/><label class="err chtErr" id="wait_err">error</label><br/>
         <label>Select  Pilot:</label>
-        <select name="pilot">
+        <select name="pilot" id="pilot" onchange="chaterDetails()">
             <?php
             foreach ($pilots as $pilot) {
                 if (is_array($pilot)) {
@@ -91,7 +92,7 @@ require_once dirname(__FILE__, 3) . '/root/view/face/header.php';
         </select>
         <br/>
         <label>Select  Copilot:</label>
-        <select name="co_pilot">
+        <select name="co_pilot" id="co_pilot" onchange="chaterDetails()">
 <?php
 foreach ($pilots as $pilot) {
     if (is_array($pilot)) {
@@ -108,9 +109,9 @@ foreach ($pilots as $pilot) {
             }
             ?>
         </select>
-        <label class="err" id="copilot">error</label><br/>
+        <label class="err chtErr" id="copilot_err">error</label><br/>
         <label>Select  Customer:</label>
-        <select name="customer">
+        <select name="customer" id="customer" onchange="chaterDetails()">
 <?php
 foreach ($customers as $customer) {
     if (is_array($customer)) {
@@ -128,7 +129,7 @@ foreach ($customers as $customer) {
 ?>
         </select>
         <br/>
-        <br/><label>&nbsp;</label><input type="submit" value="<?= $command;?> Charter"/><br/>
+        <br/><label>&nbsp;</label><input type="submit" id="submit" value="<?= $command;?> Charter" disabled/><br/>
     </form>
 
     <p>

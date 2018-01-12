@@ -56,18 +56,19 @@ br {clear: left;}
 textarea {font-family: Arial, Helvetica, sans-serif;font-size: 80%;width: 400px;height: 100px;}
 
 .right {text-align: right;}
-.error {color: red;}
+.error {color: #ffbc31;}
 .text-center {text-align: center;}
 
 input[type="submit"]{border:1px dotted #000;background-color:transparent;color:#000;padding:5px 7px;cursor:pointer;transition: 1s;border-right-style: none;border-left-style: none;border-top-style: none}
-input[type="submit"]:disabled{opacity: .3;border-radius: 10px}
+input[type="submit"]:disabled{opacity: .3;cursor: default}
 /*input[type="number"]{border:1px dotted #777;color:#000;padding:5px 7px;}*/
 input[type="submit"]:hover{background-color:#ddd;border-color: rgba(225,225,225,0)/*color: #fff;border-radius: 10px;*/}
+input:invalid {box-shadow: none;border: 1px solid #ffbc31}
 
 form.aligned {margin: .5em 0 0;}
 form.aligned label {float: left;width: 26%;margin-top: .25em;margin-right: 1em;margin-bottom: .5em;text-align: right;transition: 1s}
 form.aligned select{float: left}
-form.aligned label.err{text-align: left;color: #f00;margin-left: 1em}
+form.aligned label.err{text-align: left;color: #cc7810;margin-left: 1em;vertical-align: }
 
 form.aligned input {float: left;margin-bottom: .5em;}
 form.aligned input[text] {width: 15em;}

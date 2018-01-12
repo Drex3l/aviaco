@@ -3,10 +3,15 @@ function load() {
     for(k=0;k<main.length;k++){
         main[k].style.display = "block";
     }
-    var label = document.getElementsByClassName('err');
-    for(k=0;k<label.length;k++){
-        label[k].innerHTML = null;
+    var lblError = document.getElementsByClassName('err');
+    for(k=0;k<lblError.length;k++){
+        lblError[k].innerHTML = null;
     }
+}
+function popupTogle(id)
+{
+    var popup = document.getElementById(id);
+    popup.classList.toggle('open');
 }
 function checkboxStatus(primarykies, name, button) {
     var ID = primarykies.split(';'); //-----------split primary kies from string
@@ -22,9 +27,8 @@ function checkboxStatus(primarykies, name, button) {
 
 
     for (k = 0; k < checkbox.length; k++) if (checkbox[k].checked) count++;
-    if (count != ID.length) {
-        decider = true;
-    }else
+    if (count != ID.length)  decider = true;
+    else
     {
         for(n = 0;n < selectionArray.length; n++) if(isValidKey(selectionArray[n],ID)) decider = true;
     }
