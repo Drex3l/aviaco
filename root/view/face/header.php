@@ -15,8 +15,10 @@ ini_set("display_errors", 1);
 <body onload="load()"><?php if(empty($error_message)){?>
     <header>
     <h1>AviaCo</h1>
-    <p>the Air for the People</p><br/>
-    <ul id="navigation">
+    <p>the Air for the People</p>
+</header>
+    <nav class="head">
+        <ul id="navigation">
         <li <?php if($action === 'model_avg'){ echo 'id="active-page"'; }?> ><a <?php if($action === 'model_avg'){ echo 'href="javascript:"';}else{echo 'href="?action=model_avg"';}?>>comsumption</a><li>
     <li <?php if($action === 'engine_service'){echo 'id="active-page"'; }?>><a <?php if($action === 'engine_service'){ echo 'href="javascript:"';}else{echo 'href="?action=engine_service"';}?>>engine service</a><li>
     <li <?php if($action === 'med_exam'){echo 'id="active-page"'; }?>><a <?php if($action === 'med_exam'){ echo 'href="javascript:"';}else{echo 'href="?action=med_exam"';}?>>med exam</a><li>
@@ -25,7 +27,7 @@ ini_set("display_errors", 1);
      <li <?php if($action === 'destionations'){echo 'id="active-page"';  }?>><a <?php if($action === 'destionations'){ echo 'href="javascript:"';}else{echo 'href="?action=destionations"';}?>>Destinations</a><li>
     </ul>
     <div class="clear"></div>
-</header><?php }?>
+    </nav><?php }?>
 <style>
 #navigation {  float: right; margin: 0;border:0 dotted #aaa;padding: 0}
 #navigation li {  display: inline; list-style: none; margin: 0;padding: 0}

@@ -3,10 +3,11 @@ body {margin-top: 0;font-family: Arial, Helvetica, sans-serif;width: 900px;margi
 div.no_script{padding: 0 1em}
 ::before, ::after {-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;}
 
-header {margin: 0;border-bottom: 1px solid #444;padding: .5em 1em;padding-bottom: 0}
+header {margin: 0;padding: .5em 1em}
 header h1 {color: black;margin: 0;padding: 0;}
 header p {margin: 0;padding: .25em 0 0 0;}
-header ul {margin: 0;padding: 1em 0 0 0;}
+nav.head{margin: 0;border-bottom: 1px solid #444;padding: 0 1em}
+nav.head ul {margin: 0;padding: 1em 0 0 0;}
 
 main {margin: 0;padding: .5em 2em .25em;}
 main.js{display: none}
@@ -26,8 +27,8 @@ ul,li,.pagination {margin: 0;padding: 0;}
 nav ul {list-style-type: none;margin-left: 0;padding-left: 0;}
 nav ul li {padding-bottom: 0.5em;}
 
-#cityList span.count{margin-left: .2em;color: #000;vertical-align: top;font-size: 10pt}
-#cityList a.selected span.count{background-color: #444;color: #fff;border-bottom: 3px solid #444}
+#cityList span.count{margin-left: .2em;color: #000;vertical-align: top;font-size: 10pt;font-style: normal}
+#cityList a.selected span.count{background-color: #444;color: #fff;border-bottom: 3px solid #444;font-style: italic}
 
 a {color:#566; font-weight: 100; text-decoration: none;}
 a:visited { font-weight:100; }
