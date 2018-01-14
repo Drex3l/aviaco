@@ -6,10 +6,27 @@ abstract class dbHandler {
 
     // hold an instance of the PDO class
     private static $conn;
+    private static $cs_file = "connection.ini";
 
     private static function GetConnection() {
         // retrieve connection string information
-        $conexion = parse_ini_file(dirname(__FILE__, 4) . "/connection.ini");
+        $cs_file = dirname(__FILE__, 4) . "/".self::$cs_file;
+        if (!file_exists($cs_file)) {
+        $fh = fopen($cs_file, 'a+');fclose($fh);
+
+        if (!file_exists($cs_file)) {
+        $path = explode("/",$cs_file);
+        $err = "FILE <b>'".$path[count($path)-1]. "'</b> doesn't exists";
+
+        self::db_error(str_pad($err,23+strlen($err),' ', STR_PAD_LEFT),'connect','connection error');
+        }else{
+        $cs_string = "[SQL]\r\nhost = \r\nuser = \r\npassword = \r\ndbname = ";
+        file_put_contents($cs_file,$cs_string);
+        header('location: .');
+        }
+        }
+
+        $conexion = parse_ini_file($cs_file);
         if ($_SERVER['HTTP_HOST'] == 'sict-iis.nmmu.ac.za') {
             $DB_HOST = 'sict-mysql';
         } else {

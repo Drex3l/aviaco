@@ -12,6 +12,8 @@
                 <tr><td style="color: #000">Description</td><td style="background-color: #ddd">&nbsp;&nbsp;<?php echo substr($error_message, 23, (strlen($error_message)) - 23); ?>&nbsp;&nbsp;</td></tr>
             </table>
             <?php
+            global $cs_file;
+            if (file_exists(dirname(__FILE__, 4) . "/".self::$cs_file)) { echo '<br/> <p style="text-align:center">please check your <b>'.self::$cs_file.'</b> file</p>'; }
             break;
         case 'DML':
             $piece = explode(';', $error_message);
