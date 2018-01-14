@@ -208,9 +208,7 @@ abstract class Debug {
             fwrite($handle,$text);
             fclose($handle);
         } else {
-            epiqworx\report\Foul::customError("Could not write file $display");
-//            header("location: ../../view/error?msg=Could not write file '$display'");
-            die();
+        	return array("Could not write file $display");
         }
     }
 
@@ -221,7 +219,7 @@ abstract class Debug {
      * @return string
      */
     public static function ExceptionLog($message, $sql = "") {
-        $log = new epiqworx\report\Log();
+        $log = new epiqworx\Log();
         $exception = 'Unhandled Exception. <br />';
         $exception .= $message;
         $exception .= "<br /> You can find the error back in the log.";
@@ -230,12 +228,10 @@ abstract class Debug {
         }try {
             # Write into log
             if (!$log->write($message)) {
-                throw new Exception("&FilledVerySmallSquare;&nbsp;&nbsp;$message<br/>&nbsp;&nbsp;&FilledVerySmallSquare;&nbsp;&nbsp;could not write log file &nbsp;&nbsp;");
+                throw new Exception($message);
             }
         } catch (Exception $ex) {
-            $contents = ob_get_contents();
-            ob_clean();
-            epiqworx\report\Foul::customError($ex->getMessage());
+            return array("could not write log file");
         }
         return $exception;
     }
@@ -249,7 +245,7 @@ abstract class File{
         $imgSize = $_FILES["$fileinput"]['size'];
         if (!file_exists("$upload_dir")) {
             if(!mkdir($upload_dir, 0777, true)) {
-              epiqworx\report\Foul::customError("Directory $upload_dir could not be created");
+              return array("Directory $upload_dir could not be created");
             }
         }
             if ($imgFile)
@@ -270,17 +266,17 @@ abstract class File{
                         move_uploaded_file($tmp_dir, $upload_dir . $filename);
             } else
             {
-                        epiqworx\report\Foul::customError('File Size Exceeds Maximum upload size');
+                        return array("ile Size Exceeds Maximum upload size");
             }
           } else
           {
                     $extError = implode(',', $valid_extensions);
-                    epiqworx\report\Foul::customError('Only ' . $extError . ' files are allowed');
+                    return array("Only $extError files are allowed");
           }
                 return $filename;
         }
         } catch (RuntimeException $ex) {
-            epiqworx\report\Foul::customError($ex->getMessage());
+            return array($ex->getMessage());
         }
     }
 
@@ -319,7 +315,7 @@ abstract class File{
             if($square){File::scaleIMG($path,"$file.$ext");}
             return "$file.$ext";
         } catch (RuntimeException $ex) {
-            epiqworx\report\Foul::customError($ex->getMessage());
+            return array($ex->getMessage());
         }
     }
     public static function scaleIMG($path, $file, $dim = NULL) {

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__,2).'/report/Log.php';
+require_once dirname(__FILE__,2).'/Log.php';
 
 // Class providing generic data access functionality for PDO methods
 abstract class dbHandler {
@@ -18,7 +18,7 @@ abstract class dbHandler {
         $path = explode("/",$cs_file);
         $err = "FILE <b>'".$path[count($path)-1]. "'</b> doesn't exists";
 
-        self::db_error(str_pad($err,23+strlen($err),' ', STR_PAD_LEFT),'connect','connection error');
+        self::db_error(str_pad($err,23+strlen($err),' ', STR_PAD_LEFT),'connect','DB connection');
         }else{
         $cs_string = "[SQL]\r\nhost = \r\nuser = \r\npassword = \r\ndbname = ";
         file_put_contents($cs_file,$cs_string);
@@ -103,7 +103,12 @@ abstract class dbHandler {
         ob_clean();
         $error_message = $msg;
         $error = Debug::ExceptionLog($msg);
+        if(is_array($error)){
+        require_once dirname(__FILE__, 3) . '/view/error/error.php';
+        }else{
         require_once dirname(__FILE__, 3) . '/view/error/db.php';
+        }
+
         echo "<script> document.title = '$title'; </script>";
         exit();
     }
