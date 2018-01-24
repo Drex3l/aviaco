@@ -1,5 +1,5 @@
 
-<footer>
+<footer class="skin">
     <p class="copyright">
         &copy; <?php echo date("Y"); ?> AviaCo, Port Elizabeth
     </p>

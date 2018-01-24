@@ -17,14 +17,19 @@
             foreach ($cities as $destination) {
                 echo '<li>';
                 if (is_array($destination)) {
+                    $charter_count = Charter::count_by_city($destination['ID']);
+                    if($charter_count < 1){ $charter_count = null;}
                     ?>
                     <a href="?action=destionations&city_id=<?= $destination['ID']; ?>&country_code=<?= $country_code; ?>" <?php if ($destination['ID'] == $city_id) {echo 'class="selected"';} ?>>
-                        <?= $destination['Name']; ?>
+                        <?= $destination['Name']; ?><span <?php if(!empty($charter_count)){ echo 'class="count"';} ?>>&nbsp;<?= $charter_count;?>&nbsp;</span>
                     </a>
-                <?php } else { ?>
+                <?php } else { 
+                     $charter_count = Charter::count_by_city($cities['ID']);
+                    if($charter_count < 1){ $charter_count = null;}
+                    ?>
                     <a href="?action=destionations&city_id=<?= $cities['ID']; ?>&country_code=<?= $country_code; ?>" <?php if ($cities['ID'] == $city_id) {echo 'class="selected"';} ?>>
                     <?= $cities['Name']; ?>
-                    </a>
+                    </a><span <?php if(!empty($charter_count)){ echo 'class="count"';} ?> >&nbsp;<?= $charter_count;?>&nbsp;</span>
         <?php
         break;
     }

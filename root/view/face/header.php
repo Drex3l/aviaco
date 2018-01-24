@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL);
-ini_set("display_errors", 1);
+ini_set("display_errors", 0);
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,11 +13,11 @@ ini_set("display_errors", 1);
 
 <!-- the body section -->
 <body onload="load()"><?php if(empty($error_message)){?>
-    <header>
+    <header class="skin">
     <h1>AviaCo</h1>
     <p>the Air for the People</p>
 </header>
-    <nav class="head">
+    <nav class="head skin">
         <ul id="navigation">
         <li <?php if($action === 'model_avg'){ echo 'id="active-page"'; }?> ><a <?php if($action === 'model_avg'){ echo 'href="javascript:"';}else{echo 'href="?action=model_avg"';}?>>comsumption</a><li>
     <li <?php if($action === 'engine_service'){echo 'id="active-page"'; }?>><a <?php if($action === 'engine_service'){ echo 'href="javascript:"';}else{echo 'href="?action=engine_service"';}?>>engine service</a><li>
@@ -32,7 +32,7 @@ ini_set("display_errors", 1);
 #navigation {  float: right; margin: 0;border:0 dotted #aaa;padding: 0}
 #navigation li {  display: inline; list-style: none; margin: 0;padding: 0}
 #navigation a { color: black;  font-size: 11pt;  letter-spacing: -1px;  padding: 2px 15px; text-decoration: none;  text-transform: uppercase;border:none; margin: 0}
-#navigation a:hover{  background: #ddd;  color: #000}
-#active-page a,#active-page a:hover {  background: #000;  color: #fff;cursor: default}
+#navigation a:hover{  background: #bbb;  color: #000}
+#active-page a,#active-page a:hover {  background: #fff;  color: #000;cursor: default}
 .clear {clear: both;height: 0;}
 </style>

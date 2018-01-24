@@ -3,16 +3,18 @@ body {margin-top: 0;font-family: Arial, Helvetica, sans-serif;width: 900px;margi
 div.no_script{padding: 0 1em}
 ::before, ::after {-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;}
 
-header {margin: 0;padding: .5em 1em}
+.skin{background-color:#ddd}
+
+header {margin: 0;padding: .5em 1em;}
 header h1 {color: black;margin: 0;padding: 0;}
 header p {margin: 0;padding: .25em 0 0 0;}
-nav.head{margin: 0;border-bottom: 1px solid #444;padding: 0 1em}
+nav.head{margin: 0;border-bottom: 0 solid #444;padding: 0 1em}
 nav.head ul {margin: 0;padding: 1em 0 0 0;}
 
 main {margin: 0;padding: .5em 2em .25em;}
 main.js{display: none}
-footer {clear: both;/*margin-top: 1em;*/padding-right: 1em;border-top: 1px solid #444;}
-footer p {text-align: right;font-size: 80%;margin: 1em 0;}
+footer {clear: both;/*margin-top: 1em;*/padding: .8em;border-top: 0 solid #444;}
+footer p {text-align: right;font-size: 80%;margin:0;}
 
 
 h1 {font-size: 150%;margin: 0;padding: .5em 0 .25em}
