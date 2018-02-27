@@ -94,7 +94,7 @@ CREATE TABLE `charter` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`s215013395`@`localhost`*/ /*!50003 TRIGGER `aviaco`.`before_charter_insert`
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `aviaco`.`before_charter_insert`
 BEFORE INSERT ON `aviaco`.`charter`
 FOR EACH ROW
 BEGIN
@@ -318,7 +318,7 @@ CREATE TABLE `rating` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` FUNCTION `sf_arrayLength`(seperate CHAR(1), arrayString TEXT) RETURNS smallint(5) unsigned
+CREATE  FUNCTION `sf_arrayLength`(seperate CHAR(1), arrayString TEXT) RETURNS smallint(5) unsigned
 BEGIN
 	DECLARE count SMALLINT UNSIGNED DEFAULT 0;
 	SET @string = arrayString;
@@ -345,7 +345,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` FUNCTION `sf_checkRating`(empID int(3), rtgCode varchar(5)) RETURNS tinyint(1)
+CREATE  FUNCTION `sf_checkRating`(empID int(3), rtgCode varchar(5)) RETURNS tinyint(1)
 return ((select count(*) from earnedrating where EMP_NUM = empID && RTG_CODE = rtgCode)>0) ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -362,7 +362,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` FUNCTION `sf_cities_page_count`(block TINYINT UNSIGNED,nation CHAR(3)) RETURNS smallint(5) unsigned
+CREATE  FUNCTION `sf_cities_page_count`(block TINYINT UNSIGNED,nation CHAR(3)) RETURNS smallint(5) unsigned
 BEGIN
 
 
@@ -393,7 +393,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` FUNCTION `SPLIT_STR`(x VARCHAR(255), delim CHAR(1),pos INT) RETURNS varchar(255) CHARSET latin1
+CREATE  FUNCTION `SPLIT_STR`(x VARCHAR(255), delim CHAR(1),pos INT) RETURNS varchar(255) CHARSET latin1
     DETERMINISTIC
 BEGIN
 	RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),LENGTH(SUBSTRING_INDEX(x, delim, pos -1))+1),delim, '');
@@ -413,7 +413,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_addCharter`(
+CREATE  PROCEDURE `sp_addCharter`(
 IN plane VARCHAR(5),
 IN airport INT(11),
 IN departure DATE,
@@ -472,7 +472,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_checkAircraft`(IN id VARCHAR(5))
+CREATE  PROCEDURE `sp_checkAircraft`(IN id VARCHAR(5))
 SELECT ES.AF,ES.EL,ES.ER, M.OIL, M.FUEL FROM engine_service ES, aircraft A, average_consumption M WHERE A.AC_NUMBER = ES.AC_NUMBER && M.MOD_CODE = A.MOD_CODE AND ES.AC_NUMBER = id ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -489,7 +489,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getCharters`(IN destination INT(11))
+CREATE  PROCEDURE `sp_getCharters`(IN destination INT(11))
 SELECT DATE, AIRCRAFT, CUSTOMER, CONCAT(`EMP_FNAME`,' ',`EMP_LNAME`) PILOT, e.EMP_NUM, l.ID FROM charter_list l, employee e WHERE l.PILOT = e.EMP_NUM AND AIRPORT_CODE = destination
 ORDER BY DATE ASC ;;
 DELIMITER ;
@@ -507,7 +507,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getDestinations`(IN n TINYINT UNSIGNED, IN block TINYINT UNSIGNED,IN nation CHAR(3))
+CREATE  PROCEDURE `sp_getDestinations`(IN n TINYINT UNSIGNED, IN block TINYINT UNSIGNED,IN nation CHAR(3))
 BEGIN
 
 
@@ -531,7 +531,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getEngineServiceList`(IN hours TINYINT UNSIGNED)
+CREATE  PROCEDURE `sp_getEngineServiceList`(IN hours TINYINT UNSIGNED)
 select AC_NUMBER from engine_service WHERE EL <= hours || ER <= hours ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -548,7 +548,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getMembers`( IN item ENUM('C','P'))
+CREATE  PROCEDURE `sp_getMembers`( IN item ENUM('C','P'))
 BEGIN
 	CASE item
 	WHEN	'C'	THEN
@@ -576,7 +576,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getModelAvegrage`(IN modelCode VARCHAR(8))
+CREATE  PROCEDURE `sp_getModelAvegrage`(IN modelCode VARCHAR(8))
 SELECT ROUND(FUEL,2) FUEL, ROUND(OIL,2) OIL FROM average_consumption WHERE MOD_CODE = modelCode ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -593,7 +593,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getPilotInfo`(IN emp int(3))
+CREATE  PROCEDURE `sp_getPilotInfo`(IN emp int(3))
 select PILOT, HOURS, FLIGHTS, PIL_RATINGS RATINGS from pilot_list L, pilot_hours H WHERE H.ID = L.ID AND L.ID = emp ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -610,7 +610,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getPilotMedExam`(IN days SMALLINT UNSIGNED)
+CREATE  PROCEDURE `sp_getPilotMedExam`(IN days SMALLINT UNSIGNED)
 select CONCAT(EMP_FNAME,' ',EMP_LNAME) PILOT from pilot_list WHERE DATE_ADD(PIL_MED_DATE, INTERVAL 1 YEAR) BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE,INTERVAL days DAY) ORDER BY PILOT ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -627,7 +627,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_getRatingPilots`(IN rating VARCHAR(5))
+CREATE  PROCEDURE `sp_getRatingPilots`(IN rating VARCHAR(5))
 SELECT PILOT, ROUND(HOURS) HOURS FROM pilot_hours P, earnedrating R WHERE P.ID = R.EMP_NUM AND RTG_CODE = rating ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -644,7 +644,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_ratePilot`(IN items TEXT,IN empNO INT(3))
+CREATE  PROCEDURE `sp_ratePilot`(IN items TEXT,IN empNO INT(3))
 BEGIN 
 	DECLARE CHECKPOINT  TINYINT UNSIGNED DEFAULT 0;
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION,1265
@@ -694,7 +694,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`s215013395`@`localhost` PROCEDURE `sp_updateCharter`(
+CREATE  PROCEDURE `sp_updateCharter`(
 	IN plane VARCHAR(5),
 	IN airport INT(11),
 	IN departure DATE,
@@ -750,7 +750,7 @@ USE `aviaco`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `average_consumption` AS select `A`.`MOD_CODE` AS `MOD_CODE`,round(avg(`C`.`CHAR_FUEL_GALLONS`),2) AS `FUEL`,round(avg(`C`.`CHAR_OIL_QTS`),2) AS `OIL` from (`charter` `C` join `aircraft` `A`) where (`C`.`AC_NUMBER` = `A`.`AC_NUMBER`) group by `A`.`MOD_CODE` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -768,7 +768,7 @@ USE `aviaco`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `charter_list` AS select `ct`.`CHAR_TRIP` AS `ID`,`ct`.`CHAR_DATE` AS `DATE`,`ct`.`AC_NUMBER` AS `AIRCRAFT`,concat(`c`.`CUS_FNAME`,' ',`c`.`CUS_LNAME`) AS `CUSTOMER`,`ct`.`AIRPORT_CODE` AS `AIRPORT_CODE`,(select `cr`.`EMP_NUM` from `crew` `cr` where ((`cr`.`CHAR_TRIP` = `ct`.`CHAR_TRIP`) and (`cr`.`CREW_JOB` = 'Pilot'))) AS `PILOT`,(select `cr`.`EMP_NUM` from `crew` `cr` where ((`cr`.`CHAR_TRIP` = `ct`.`CHAR_TRIP`) and (`cr`.`CREW_JOB` = 'Copilot'))) AS `COPILOT` from (`charter` `ct` join `customer` `c`) where (`c`.`CUS_CODE` = `ct`.`CUS_CODE`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -786,7 +786,7 @@ USE `aviaco`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `engine_service` AS select `aircraft`.`AC_NUMBER` AS `AC_NUMBER`,(100 - (`aircraft`.`AC_TTEl` % 100)) AS `EL`,(100 - (`aircraft`.`AC_TTER` % 100)) AS `ER`,(500 - (`aircraft`.`AC_TTAF` % 500)) AS `AF` from `aircraft` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -804,7 +804,7 @@ USE `aviaco`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `pilot_hours` AS select `E`.`EMP_NUM` AS `ID`,concat(`E`.`EMP_FNAME`,' ',`E`.`EMP_LNAME`) AS `PILOT`,(select sum(`CH`.`CHAR_HOURS_FLOWN`) from (`crew` `CRW` join `charter` `CH`) where ((`CRW`.`CHAR_TRIP` = `CH`.`CHAR_TRIP`) and (`CRW`.`EMP_NUM` = `CR`.`EMP_NUM`))) AS `HOURS` from (`crew` `CR` join `employee` `E`) where (`E`.`EMP_NUM` = `CR`.`EMP_NUM`) group by `ID` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -822,7 +822,7 @@ USE `aviaco`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`s215013395`@`localhost` SQL SECURITY DEFINER */
+/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `pilot_list` AS select distinct `E`.`EMP_NUM` AS `ID`,`E`.`EMP_FNAME` AS `EMP_FNAME`,`E`.`EMP_LNAME` AS `EMP_LNAME`,`E`.`EMP_HIRE_DATE` AS `EMP_HIRE_DATE`,`P`.`PIL_MED_DATE` AS `PIL_MED_DATE`,`P`.`PIL_RATINGS` AS `PIL_RATINGS`,`R`.`EARNRTG_DATE` AS `EARNRTG_DATE`,(select count(`C`.`EMP_NUM`) from `crew` `C` where (`C`.`EMP_NUM` = `E`.`EMP_NUM`)) AS `FLIGHTS` from ((`employee` `E` join `pilot` `P`) join `earnedrating` `R`) where ((`P`.`EMP_NUM` = `E`.`EMP_NUM`) and (`R`.`EMP_NUM` = `P`.`EMP_NUM`)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
