@@ -1,10 +1,10 @@
 <?php
 //---------------------------------------------------DEFINE GLOBAL PATH CONSTANT
-$phpSelf = explode("/", filter_input(INPUT_SERVER, 'PHP_SELF'));
+$phpSelf = explode(DIRECTORY_SEPARATOR, filter_input(INPUT_SERVER, 'PHP_SELF'));
 if (empty($level)){$level=1;}   //----------------------------------------------website hierachy
 $temp = "";
 for($k=1;$k<count($phpSelf)-$level;$k++){
-    $temp .= '/'.$phpSelf[$k];
+    $temp .= DIRECTORY_SEPARATOR.$phpSelf[$k];
 }
 define('ROOT', $temp);
 define('PATH', "http://" . filter_input(INPUT_SERVER, 'HTTP_HOST') . ROOT);
@@ -323,14 +323,14 @@ abstract class File{
         if(strtolower($img[1]) == 'svg')            {return false;}
         switch (strtolower($img[1])) {
             case 'gif':
-                $im = imagecreatefromgif("$path/$file");
+                $im = imagecreatefromgif("$path".DIRECTORY_SEPERATOR."$file");
                 break;
             case 'jpg':
             case 'jpeg':
-                $im = imagecreatefromjpeg("$path/$file");
+                $im = imagecreatefromjpeg("$path".DIRECTORY_SEPERATOR."$file");
                 break;
             case 'png':
-                $im = imagecreatefrompng("$path/$file");
+                $im = imagecreatefrompng("$path".DIRECTORY_SEPERATOR."$file");
                 break;
         }
 
@@ -346,13 +346,13 @@ abstract class File{
         if ($im2 !== FALSE) {
             switch (strtolower($img[1])) {
                 case 'gif':
-                    imagegif($im2, "$path/$file");
+                    imagegif($im2, "$path".DIRECTORY_SEPERATOR."$file");
                     break;
                 case 'jpg':
-                    imagejpeg($im2, "$path/$file");
+                    imagejpeg($im2, "$path".DIRECTORY_SEPERATOR."$file");
                     break;
                 case 'png':
-                    imagepng($im2, "$path/$file");
+                    imagepng($im2, "$path".DIRECTORY_SEPERATOR."$file");
                     break;
             }
         }
